@@ -3,7 +3,7 @@ package etu.iuto;
 public class Client {
     private int score;
     private String nom;
-    private int nbVictoire;
+    private int nbVictoires;
     private int nbPartiesJouees;
     private int nbDefaites;
 
@@ -14,10 +14,40 @@ public class Client {
     public Client(String nom) {
         this.nom = nom;
         this.score = 0;
-        this.nbVictoire = 0;
+        this.nbVictoires = 0;
         this.nbPartiesJouees = 0;
         this.nbDefaites = 0;
     }
+
+    /**
+     * @param joueur l'adversaire
+     * Choisis l'adversaire parmi les joueurs en attente
+     */
+    public void selectAdversaire(Client joueur) {
+        // Permet de sélectionner un adversaire
+    }
+
+    /**
+     * Quitte la partie
+     */
+    public void quitter() {
+        // Permet au joueur de quitter la partie
+    }
+
+    /**
+     * @param joueur un joueur
+     * Affiche l'historique des parties du joueur
+     */
+    public static void historiqueParties(Client joueur) {
+        // Affiche l'historique des parties du joueur
+    }
+
+    @Override
+    public String toString(){
+        return "Joueur " + this.nom + "\nScore: " + this.score + "\nNombre de parties jouées: " + this.nbPartiesJouees + "  Victoires: " + this.nbVictoires + "  Défaites: " + this.nbDefaites + "   Nuls: " + this.getPartiesNuls(); 
+    }
+
+    // Getters et Setters
 
     /**
      * @return le score du joueur
@@ -50,37 +80,55 @@ public class Client {
     }
 
     /**
-     * @param joueur l'adversaire
-     * Choisis l'adversaire parmi les joueurs en attente
+     * @return le nombre de victoires du joueur
      */
-    public void selectAdversaire(Client joueur) {
-        // Permet de sélectionner un adversaire
+    public int getNbVictoires(){
+        return nbVictoires;
     }
 
     /**
-     * Quitte la partie
+     * @param nbVictoires le nouveau nombre de victoires du joueur
+     * Change le nombre de victoires du joueur
      */
-    public void quitter() {
-        // Permet au joueur de quitter la partie
+    public void setNbVictoires(int nbVictoires){
+        this.nbVictoires=nbVictoires;
     }
 
     /**
-     * @param joueur un joueur
-     * Affiche l'historique des parties du joueur
+     * @return le nombre de parties jouées par le joueur
      */
-    public static void historiqueParties(Client joueur) {
-        // Affiche l'historique des parties du joueur
+    public int getNbPartiesJouees(){
+        return nbPartiesJouees;
+    }
+
+
+    /**
+     * @param nbPartiesJouees le nouveau nombre de parties jouées
+     * Change le nombre de parties jouées par le joueur
+     */
+    public void setNbPartiesJouees(int nbPartiesJouees){
+        this.nbPartiesJouees=nbPartiesJouees;
+    }
+
+    /**
+     * @return le nombre de défaites du joueur
+     */
+    public int getNbDefaites(){
+        return nbDefaites;
+    }
+
+    /**
+     * @param nbDefaites le nouveau nombre de défaites du joueur
+     * Change le nombre de défaites du joueur
+     */
+    public void setNbDefaites(int nbDefaites){
+        this.nbDefaites=nbDefaites;
     }
 
     /**
      * @return les parties nuls du joueurs
      */
     public int getPartiesNuls(){
-        return nbPartiesJouees -(nbDefaites + nbVictoire);
-    }
-
-    @Override
-    public String toString(){
-        return "Joueur " + this.nom + "\nScore: " + this.score + "\nNombre de parties jouées: " + this.nbPartiesJouees + "  Victoires: " + this.nbVictoire + "  Défaites: " + this.nbDefaites + "   Nuls: " + this.getPartiesNuls(); 
+        return nbPartiesJouees -(nbDefaites + nbVictoires);
     }
 }
