@@ -26,9 +26,28 @@ public class Plateau {
     }
 
     /**
-     * Clear le plateau de tous les caractères présents
+     * Vide le plateau de tous les caractères présents
      */
     public void clearPlateau(){
         this.initPlateau();
+    }
+
+    /**
+     * @return le nombre de colonnes du plateau
+     */
+    public int getNbColonnes(){
+        return NBCOLONNES;
+    }
+
+    /**
+     * @return le nombre de lignes du plateau
+     */
+    public int getNbLignes(){
+        return NBLIGNES;
+    }
+
+    @Override
+    public String toString(){
+        return "Plateau Puissance 4: NbColonnes="+NBCOLONNES+", NbLignes="+NBLIGNES;
     }
 }
