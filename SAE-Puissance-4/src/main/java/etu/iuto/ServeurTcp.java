@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
-public class Serveur_tcp {
+public class ServeurTcp {
 
     public static void main(String[] args) throws IOException{
 
@@ -21,14 +21,13 @@ public class Serveur_tcp {
 
 
             BufferedReader reader = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()) );
-
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(),true);
+
             System.out.println(reader.readLine());
             writer.println("message bien reçu !");
-            
+
             reader.close();  
             writer.close();
-            
             clientSocket.close();
             serverSoket.close();
         }
