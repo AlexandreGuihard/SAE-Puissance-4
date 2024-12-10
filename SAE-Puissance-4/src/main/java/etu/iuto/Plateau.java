@@ -6,22 +6,23 @@ import java.util.List;
 public class Plateau {
     private final int NBCOLONNES=7;
     private final int NBLIGNES=6;
-    private List<List<Character>> plateau;
+    private String[][] plateau;
 
     /**
      * Constructeur de la classe
      */
     public Plateau(){
-        this.initPlateau();
+        this.plateau=new String[NBCOLONNES][NBLIGNES];
     }
 
     /**
      * Initialise le plateau
      */
-    private void initPlateau(){
-        this.plateau=new ArrayList<>(NBLIGNES);
+    public void initPlateau(){
         for(int i=0;i<NBLIGNES;i++){
-            this.plateau.add(new ArrayList<>(NBCOLONNES));
+            for(int j=0;j<NBCOLONNES;j++){
+                plateau[i][j]=" . ";
+            }
         }
     }
 
@@ -31,6 +32,29 @@ public class Plateau {
     public void clearPlateau(){
         this.initPlateau();
     }
+
+    /**
+     * @param x le numéro de colonne
+     * @param pion le caractère pour représenter le pion du joueur
+     * @return true si le pion a été placé sinon false
+     * Place le pion dans la colonne x
+     */
+    public boolean ajouterPion(int colonne, String pion){
+        for(int j=NBLIGNES-1;j<=0;--j){
+            if(!plateau[j][colonne].equals(" . ")){
+                plateau[j][colonne]=" "+pion+" ";
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String toString(){
+        return "Plateau Puissance 4: NbColonnes="+NBCOLONNES+", NbLignes="+NBLIGNES;
+    }
+
+    // Getters des attributs
 
     /**
      * @return le nombre de colonnes du plateau
@@ -46,8 +70,7 @@ public class Plateau {
         return NBLIGNES;
     }
 
-    @Override
-    public String toString(){
-        return "Plateau Puissance 4: NbColonnes="+NBCOLONNES+", NbLignes="+NBLIGNES;
+    public String[][] getPlateau(){
+        return plateau;
     }
 }
