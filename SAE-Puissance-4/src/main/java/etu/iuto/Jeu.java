@@ -105,7 +105,6 @@ public class Jeu {
     }
 
     /**
-     * @param colonne la colonne où le dernier pion a été posé
      * @return true si il y a 4 pions de la même couleur consécutifs sur une diagonale sinon false
      */
     public boolean checkDiagonale(){
@@ -113,26 +112,29 @@ public class Jeu {
         int suitePionsIdentiques=0;
         for(int i=0;i<plateau.getNbColonnes();i++){
             for(int j=0;j<plateau.getNbLignes();j++){
-                String pion=plateau.getPlateau()[i][j];
                 String suite = "";
-                // Diagonal bas-droite
-                if (i+4 < plateau.getNbColonnes() && j + 4 < plateau.getNbLignes()){
-                    for (int k = 1; k < 4; k++){
+                if (i+4 <= plateau.getNbColonnes() && j + 4 <= plateau.getNbLignes()){
+                    for (int k = 0; k < 4; k++){
                         suite += plateau.getPlateau()[i+k][j+k];
                     }
+                    // Verifier si la suite est gagnante
+                    char couleur = ' ';
+                    for (char c : suite.toCharArray()){
+
+                    }
                 }
-                if (i+4 < plateau.getNbColonnes() && j + 4 < plateau.getNbLignes()){
-                    for (int k = 1; k < 4; k++){
+                if (i+4 <= plateau.getNbColonnes() && j - 3 >= 0){
+                    for (int k = 0; k < 4; k++){
                         suite += plateau.getPlateau()[i+k][j-k];
                     }
                 }
-                if (i+4 < plateau.getNbColonnes() && j + 4 < plateau.getNbLignes()){
-                    for (int k = 1; k < 4; k++){
+                if (i-3 >= 0 && j + 4 <= plateau.getNbLignes()){
+                    for (int k = 0; k < 4; k++){
                         suite += plateau.getPlateau()[i-k][j+k];
                     }
                 }
-                if (i+4 < plateau.getNbColonnes() && j + 4 < plateau.getNbLignes()){
-                    for (int k = 1; k < 4; k++){
+                if (i-3 >= 0 && j-3 >= 0){
+                    for (int k = 0; k < 4; k++){
                         suite += plateau.getPlateau()[i-k][j-k];
                     }
                 }
