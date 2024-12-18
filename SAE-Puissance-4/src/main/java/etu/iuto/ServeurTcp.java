@@ -23,14 +23,9 @@ public class ServeurTcp {
             BufferedReader reader = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()) );
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(),true);
 
-            while (reader.readLine() != "quit") {
-
             System.out.println(reader.readLine());
             writer.println("message bien reçu !");
 
-            
-
-            }
             writer.println("by");
             
 

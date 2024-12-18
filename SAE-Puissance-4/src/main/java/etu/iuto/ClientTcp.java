@@ -17,7 +17,7 @@ public class ClientTcp {
         this.ip = ip ;
         this.nomjeur = nomjeur ;
         try{
-        this.clientSocket = new Socket("localhost",1111);
+        this.clientSocket = new Socket(this.ip,1111);
         }
         catch(Exception e){
             System.err.println("[erreur]" + e);
@@ -52,17 +52,16 @@ public class ClientTcp {
 
     public static void main(String[] args) throws IOException{
         try{
-        ClientTcp client1 = new ClientTcp("192.168.1.10","jj");
-
+        ClientTcp client1 = new ClientTcp("localhost","jj");
+        
         BufferedReader reader = new BufferedReader( new InputStreamReader(client1.getClientSocket().getInputStream()) );
         PrintWriter writer = new PrintWriter(client1.getClientSocket().getOutputStream(),true);
+        System.out.println("marche");
+       
+        writer.println("quit");
+        System.out.println(reader.readLine());
+        System.out.println("marche");
         
-        while (reader.readLine() != "quit") {
-            System.out.println(reader.readLine());
-            System.out.println("marche");
-            writer.println("quit");
-            
-        }
         
         System.out.println("fin");
 
