@@ -13,7 +13,7 @@ public class ServeurTcp {
     public static void main(String[] args) throws IOException{
 
         try{
-            ServerSocket serverSoket = new ServerSocket(8080);//choix du port
+            ServerSocket serverSoket = new ServerSocket(1111);//choix du port
             System.out.println("serveur en attente");
 
             Socket clientSocket = serverSoket.accept();
@@ -23,8 +23,16 @@ public class ServeurTcp {
             BufferedReader reader = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()) );
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(),true);
 
+            while (reader.readLine() != "quit") {
+
             System.out.println(reader.readLine());
             writer.println("message bien reçu !");
+
+            
+
+            }
+            writer.println("by");
+            
 
             reader.close();  
             writer.close();
