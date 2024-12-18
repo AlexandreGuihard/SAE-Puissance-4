@@ -7,13 +7,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ClientTcp {
+public class ClientTcp implements Runnable {
 
     private String ip;
     private String nomjeur;
     private Socket clientSocket;
 
-    public ClientTcp(String ip,String nomjeur ){
+    public ClientTcp(String ip,String nomjeur){
         this.ip = ip ;
         this.nomjeur = nomjeur ;
         try{
@@ -22,6 +22,11 @@ public class ClientTcp {
         catch(Exception e){
             System.err.println("[erreur]" + e);
         }
+    }
+
+
+    public ClientTcp( Socket socket){
+        this.clientSocket = socket;
 
     }
 
@@ -49,32 +54,10 @@ public class ClientTcp {
         this.clientSocket = clientSocket;
     }
 
+    @Override
+    public void run(){
+        // Interaction avec le client
 
-    public static void main(String[] args) throws IOException{
-        try{
-        ClientTcp client1 = new ClientTcp("localhost","jj");
-        
-        BufferedReader reader = new BufferedReader( new InputStreamReader(client1.getClientSocket().getInputStream()) );
-        PrintWriter writer = new PrintWriter(client1.getClientSocket().getOutputStream(),true);
-        System.out.println("marche");
-       
-        writer.println("quit");
-        System.out.println(reader.readLine());
-        System.out.println("marche");
-        
-        
-        System.out.println("fin");
+        }
 
-        
-
-        reader.close();  
-        writer.close();
-        client1.getClientSocket().close();
-
-    }
-
-    catch(Exception e){
-        System.err.println("[erreur]" + e);
-    }
-    }
 }
