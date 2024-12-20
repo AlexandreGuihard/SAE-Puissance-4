@@ -12,31 +12,8 @@ public class Executable{
         try{
         ClientTcp client1 = new ClientTcp("localhost","jj");
         
-        BufferedReader reader = new BufferedReader( new InputStreamReader(client1.getClientSocket().getInputStream()) );
-        PrintWriter writer = new PrintWriter(client1.getClientSocket().getOutputStream(),true);
-        System.out.println("marche");
-       
-        String read = "";
-        while (reader.readLine() != "quit") {
-            Scanner myObj = new Scanner(System.in);
-            String ecrit = myObj.nextLine();
-            writer.println(ecrit);
-            
-            read = reader.readLine();
-            System.out.println(read);
-            System.out.println("marche");
-        }
-        
-        
-        
-        System.out.println("fin");
-
-        
-
-        reader.close();  
-        writer.close();
-        client1.getClientSocket().close();
-
+        Thread t = new Thread (client1) ;
+        t.start();
     }
 
     catch(Exception e){

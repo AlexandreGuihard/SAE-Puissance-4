@@ -16,35 +16,16 @@ public class ServeurTcp {
 
         try{
             List<Thread> client = new ArrayList<Thread>();
+            
             ServerSocket serverSoket = new ServerSocket(1111);//choix du port
-
+            System.out.println("serveur en attente");
             while(true){
-                System.out.println("serveur en attente");
-                Socket clientSocket = serverSoket.accept();
-
-
-                Thread t = new Thread(new ClientTcp(clientSocket));
-                t.start();
-                System.out.println("connection etablie avec le client");
-
-
-                BufferedReader reader = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()) );
-                PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(),true);
-                String read ="";
-                
-                read =reader.readLine();
-                System.out.println(read);
-                writer.println("message bien reçu !");
-                writer.println("quit");
-                
-                if (read != "quit") {
-                    reader.close();  
-                    writer.close();
-                    clientSocket.close();
-                    serverSoket.close();
-                }
+            Socket clientSocket = serverSoket.accept();
+            System.out.println("connection etablie avec le client");
+            Thread t = new Thread(new ClientHandler(clientSocket));
+            t.start();
             }
-
+            //serverSoket.close();
         }
         catch (Exception e){
             System.err.println("[erreur]" + e);
@@ -52,5 +33,5 @@ public class ServeurTcp {
         }
         
     }
-    
 }
+    

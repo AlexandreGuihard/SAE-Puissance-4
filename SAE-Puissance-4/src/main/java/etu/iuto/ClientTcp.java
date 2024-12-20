@@ -58,6 +58,41 @@ public class ClientTcp implements Runnable {
     public void run(){
         // Interaction avec le client
 
+        try{
+
+        BufferedReader reader = new BufferedReader( new InputStreamReader(this.getClientSocket().getInputStream()) );
+        PrintWriter writer = new PrintWriter(this.getClientSocket().getOutputStream(),true);
+        System.out.println("marche");
+
+        Scanner myObj = new Scanner(System.in);
+        String read ="";
+
+        while (read != "quit") {
+            read=reader.readLine();
+            System.out.println(read);
+
+            if (read != "quit") {
+
+                String ecrit = myObj.nextLine();
+                writer.println(ecrit);
+                
+                synchronized(this){
+                    this.wait();
+                }
+            
+            }
+        }
+        
+
+        reader.close();  
+        writer.close();
+        this.getClientSocket().close();
+        }
+
+        catch(Exception e){
+            System.err.println("[erreur]" + e);
+        }
+
         }
 
 }
