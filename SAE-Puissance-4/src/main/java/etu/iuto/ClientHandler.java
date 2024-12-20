@@ -23,21 +23,19 @@ public class ClientHandler implements Runnable{
     PrintWriter writer = new PrintWriter(this.clientSocket.getOutputStream(),true);
     String read = "";
 
-    while (read != "quit") {
-        writer.println("quit");
-        
-        read=reader.readLine();
-        System.out.println(read);
+    while (!"quit".equals(read)) {
 
         writer.println("quit");
+        read=reader.readLine();
+        System.out.println(read);
         
     }
 
     System.out.println("by");
-
     reader.close();  
     writer.close();
     clientSocket.close();
+    
     }
 
     catch (Exception e){

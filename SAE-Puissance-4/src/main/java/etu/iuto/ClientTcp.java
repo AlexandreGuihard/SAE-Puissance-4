@@ -25,10 +25,7 @@ public class ClientTcp implements Runnable {
     }
 
 
-    public ClientTcp( Socket socket){
-        this.clientSocket = socket;
 
-    }
 
     public String getIp() {
         return this.ip;
@@ -67,7 +64,7 @@ public class ClientTcp implements Runnable {
         Scanner myObj = new Scanner(System.in);
         String read ="";
 
-        while (read != "quit") {
+        while (!"quit".equals(read)) {
             read=reader.readLine();
             System.out.println(read);
 
@@ -76,17 +73,15 @@ public class ClientTcp implements Runnable {
                 String ecrit = myObj.nextLine();
                 writer.println(ecrit);
                 
-                synchronized(this){
-                    this.wait();
-                }
             
             }
         }
-        
+        writer.println("quit");
 
         reader.close();  
         writer.close();
         this.getClientSocket().close();
+        
         }
 
         catch(Exception e){
