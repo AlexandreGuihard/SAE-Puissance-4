@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class ServeurTcp {
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) {
 
         try{
             List<Thread> client = new ArrayList<Thread>();
