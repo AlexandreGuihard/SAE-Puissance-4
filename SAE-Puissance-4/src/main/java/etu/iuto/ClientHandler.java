@@ -23,15 +23,31 @@ public class ClientHandler implements Runnable{
     PrintWriter writer = new PrintWriter(this.clientSocket.getOutputStream(),true);
     String read = "";
 
+    writer.println("name");
     while (!"quit".equals(read)) {
 
-        writer.println("quit");
+        writer.println("que voulez vous faire ?");
         read=reader.readLine();
         System.out.println(read);
+
+        if ("quit".equals(read)) {
+            writer.println("quit");
+        }
+
+        if ("ok".equals(read)) {
+            writer.println("whats up");
+            
+        }
+
+        if ("liste gamme".equals(read)) {
+            writer.println("voici la liste des joeur disponible");
+            
+        }
         
     }
 
-    System.out.println("by");
+    System.out.println("fin de communication avec");
+    writer.println("quit");
     reader.close();  
     writer.close();
     clientSocket.close();

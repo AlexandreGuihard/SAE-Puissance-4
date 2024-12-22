@@ -12,10 +12,12 @@ public class ClientTcp implements Runnable {
     private String ip;
     private String nomjeur;
     private Socket clientSocket;
+    private boolean ecrit;
 
     public ClientTcp(String ip,String nomjeur){
         this.ip = ip ;
         this.nomjeur = nomjeur ;
+        this.ecrit = true;
         try{
         this.clientSocket = new Socket(this.ip,1111);
         }
@@ -64,14 +66,24 @@ public class ClientTcp implements Runnable {
         Scanner myObj = new Scanner(System.in);
         String read ="";
 
+
         while (!"quit".equals(read)) {
             read=reader.readLine();
             System.out.println(read);
 
             if (read != "quit") {
+                this.ecrit = true;
 
-                String ecrit = myObj.nextLine();
-                writer.println(ecrit);
+                
+                if ("name".equals(read)) {
+                    this.ecrit = false;
+                    writer.println(this.getNomjeur());
+                    writer.println(this.getIp());
+                }
+                if (this.ecrit) {
+                    String ecrit = myObj.nextLine();
+                    writer.println(ecrit);
+                }
                 
             
             }
