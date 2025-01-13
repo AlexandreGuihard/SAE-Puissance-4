@@ -1,7 +1,5 @@
 package etu.iuto;
 
-import java.util.Arrays;
-
 public class Jeu {
     private Plateau plateau;
     private Client joueurJ;
@@ -42,20 +40,38 @@ public class Jeu {
     }
 
     public void jouer(){
-        while (!gagne){
+        int tour = 1;
+        int choix = 0;
+        affichePlateau();
+        do {
+            // Joueur J
+            // Vérification si le joueur peut poser le pion et redemande si
+            do {
+                // Ici demander le choix de l'utilisateur
+                choix = 0;
+            } while (!poserPion(choix, joueurJ));
+            // Si victoire du joueur J
+            if (detecterVictoire(choix)) {
+                break;
+            }
+
+            // Joueur R
+            // Vérification si le joueur peut poser le pion et redemande si
+            do {
+                // Ici demander le choix de l'utilisateur
+                choix = 1;
+            } while (!poserPion(choix, joueurR));
+            // Si victoire du joueur R
+            if (detecterVictoire(choix)) {
+                break;
+            }
+            // Affichage
+            System.out.println("------- [Tour n°" + tour + "] -------");
             affichePlateau();
-            poserPion(0, joueurR);
-            poserPion(1, joueurJ);
-            poserPion(1, joueurR);
-            poserPion(2, joueurR);
-            poserPion(2, joueurJ);
-            poserPion(2, joueurR);
-            poserPion(3, joueurJ);
-            poserPion(3, joueurR);
-            poserPion(3, joueurJ);
-            poserPion(3, joueurR);
-            gagne = detecterVictoire(0);
-        }
+            tour++;
+        } while (!gagne);
+        System.out.println("------- [Tour n°" + tour + "] -------");
+        affichePlateau();
     }
 
     public boolean poserPion(int colonne, Client joueur){
