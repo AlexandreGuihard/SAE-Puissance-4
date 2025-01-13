@@ -12,7 +12,7 @@ public class Plateau {
      * Constructeur de la classe
      */
     public Plateau(){
-        this.plateau=new String[NBCOLONNES][NBLIGNES];
+        this.plateau=new String[NBLIGNES][NBCOLONNES];
     }
 
     /**
@@ -40,12 +40,20 @@ public class Plateau {
      * Place le pion dans la colonne x
      */
     public boolean ajouterPion(int colonne, String pion){
-        for(int j=NBLIGNES-1;j<=0;--j){
-            if(!plateau[j][colonne].equals(" . ")){
-                plateau[j][colonne]=" "+pion+" ";
+        int x=NBLIGNES-1;
+        while (x>=0) {
+            if (plateau[x][colonne].equals(" . ")) {
+                plateau[x][colonne]=" " + pion + " ";
                 return true;
             }
+            --x;
         }
+//        for(int j=NBLIGNES-1;j<=0;--j){
+//            if(!plateau[j][colonne].equals(" . ")){
+//                plateau[j][colonne]=" "+pion+" ";
+//                return true;
+//            }
+//        }
         return false;
     }
 

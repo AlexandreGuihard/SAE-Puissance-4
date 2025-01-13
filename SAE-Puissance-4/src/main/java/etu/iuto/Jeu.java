@@ -1,5 +1,7 @@
 package etu.iuto;
 
+import java.util.Arrays;
+
 public class Jeu {
     private Plateau plateau;
     private Client joueurJ;
@@ -15,6 +17,8 @@ public class Jeu {
         this.joueurJ=joueurJ;
         this.joueurR=joueurR;
         this.plateau=new Plateau();
+        this.initPlateau();
+        this.gagne=false;
     }
 
     /**
@@ -30,12 +34,19 @@ public class Jeu {
     public void affichePlateau(){
         String[][] lePlateau=plateau.getPlateau();
         for(int i=0;i<plateau.getNbLignes();i++){
-            System.out.println(lePlateau[i]);
+            for (int j=0;j<plateau.getNbColonnes();j++){
+                System.out.print(lePlateau[i][j]);
+            }
+            System.out.println();
         }
     }
 
     public void jouer(){
-        affichePlateau();
+        while (!gagne){
+            affichePlateau();
+            poserPion(0, joueurJ);
+            gagne = detecterVictoire(0);
+        }
     }
 
     public boolean poserPion(int colonne, Client joueur){
@@ -57,13 +68,13 @@ public class Jeu {
     public boolean ckeckHorizontal(){
         String suitePion="";
         int suitePionsIdentiques=0;
-        for(int i=0;i<plateau.getNbColonnes();i++){
-            for(int j=0;j<plateau.getNbLignes();j++){
+        for(int i=0;i<plateau.getNbLignes();i++){
+            for(int j=0;j<plateau.getNbColonnes();j++){
                 String pion=plateau.getPlateau()[i][j];
                 if(!(pion.equals(" . ")) && pion.equals(suitePion)){
                     suitePionsIdentiques++;
                 }
-                else if(suitePionsIdentiques==0 && !(pion.equals(" . "))){
+                else if(suitePionsIdentiques==0 && (pion.equals(" . "))){
                     suitePion=pion;
                     suitePionsIdentiques++;
                 }
@@ -89,7 +100,7 @@ public class Jeu {
             if(!(pion.equals(" . ") && pion.equals(suitePion))){
                 suitePionsIdentiques++;
             }
-            else if(suitePionsIdentiques==0 && !(pion.equals(" . "))){
+            else if(suitePionsIdentiques==0 && (pion.equals(" . "))){
                 suitePion=pion;
                 suitePionsIdentiques++;
             }
@@ -110,8 +121,8 @@ public class Jeu {
     public boolean checkDiagonale(){
         String suitePion="";
         int suitePionsIdentiques=0;
-        for(int i=0;i<plateau.getNbColonnes();i++){
-            for(int j=0;j<plateau.getNbLignes();j++){
+        for(int i=0;i<plateau.getNbLignes();i++){
+            for(int j=0;j<plateau.getNbColonnes();j++){
                 String suite = "";
                 if (i+4 <= plateau.getNbColonnes() && j + 4 <= plateau.getNbLignes()){
                     for (int k = 0; k < 4; k++){
