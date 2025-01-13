@@ -1,5 +1,7 @@
 package etu.iuto;
 
+import java.util.Scanner;
+
 public class Client {
     private int score;
     private String nom;
@@ -25,6 +27,19 @@ public class Client {
      */
     public void selectAdversaire(Client joueur) {
         // Permet de sélectionner un adversaire
+    }
+
+    /**
+     * Demande au joueur de placer son pion dans une colonne
+     * @return le choix de colonne du joueur
+     */
+    public int askColonne() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choisissez une colonne : ");
+
+        int choix = scanner.nextInt();
+        System.out.println("Le joueur " + nom + " à choisi la colonne " + choix);
+        return choix;
     }
 
     /**
