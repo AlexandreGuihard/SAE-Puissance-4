@@ -44,7 +44,16 @@ public class Jeu {
     public void jouer(){
         while (!gagne){
             affichePlateau();
-            poserPion(0, joueurJ);
+            poserPion(0, joueurR);
+            poserPion(1, joueurJ);
+            poserPion(1, joueurR);
+            poserPion(2, joueurR);
+            poserPion(2, joueurJ);
+            poserPion(2, joueurR);
+            poserPion(3, joueurJ);
+            poserPion(3, joueurR);
+            poserPion(3, joueurJ);
+            poserPion(3, joueurR);
             gagne = detecterVictoire(0);
         }
     }
@@ -95,8 +104,8 @@ public class Jeu {
     public boolean checkVertical(int colonne){
         String suitePion="";
         int suitePionsIdentiques=0;
-        for(int j=0;j<plateau.getNbLignes();j++){
-            String pion=plateau.getPlateau()[colonne][j];
+        for(int j=plateau.getNbLignes()-1;j>=0;j--) {
+            String pion=plateau.getPlateau()[j][colonne];
             // Si la case est vide
             if (pion.equals(" . ")){
                 // il ne peut pas y avoir de suite
@@ -104,7 +113,7 @@ public class Jeu {
             }
             // Si c'est une autre couleur revenir à zero
             else if (!(pion.equals(suitePion))){
-                suitePion=pion;
+                suitePion = pion;
                 suitePionsIdentiques = 1;
             // Sinon le pion est le même donc on incrémente la suite de pion identique
             } else {
@@ -119,44 +128,42 @@ public class Jeu {
     }
 
     /**
-     * @return true si il y a 4 pions de la même couleur consécutifs sur une diagonale sinon false
+     * @return true s'il y a 4 pions de la même couleur consécutifs sur une diagonale sinon false
      */
-    public boolean checkDiagonale(){
-        String suitePion="";
-        int suitePionsIdentiques=0;
-        for(int i=0;i<plateau.getNbLignes();i++){
-            for(int j=0;j<plateau.getNbColonnes();j++){
-                String suite = "";
-                if (i+4 <= plateau.getNbColonnes() && j + 4 <= plateau.getNbLignes()){
-                    for (int k = 0; k < 4; k++){
-                        suite += plateau.getPlateau()[i+k][j+k];
-                    }
-                    // Verifier si la suite est gagnante
-                    char couleur = ' ';
-                    for (char c : suite.toCharArray()){
+    public boolean checkDiagonale() {
+        int nbLignes = plateau.getNbLignes();
+        int nbColonnes = plateau.getNbColonnes();
 
+        for (int i = 0; i < nbLignes; i++) {
+            for (int j = 0; j < nbColonnes; j++) {
+                String pion = plateau.getPlateau()[i][j];
+
+                // Si la case est vide
+                if (!(pion.equals(" . "))) {
+                    // Bas droit
+                    if (i + 3 < nbLignes && j + 3 < nbColonnes) {
+                        if (pion.equals(plateau.getPlateau()[i + 1][j + 1]) &&
+                                pion.equals(plateau.getPlateau()[i + 2][j + 2]) &&
+                                pion.equals(plateau.getPlateau()[i + 3][j + 3])) {
+                            return true;
+                        }
+                    }
+
+                    // Haut droite
+                    if (i - 3 >= 0 && j + 3 < nbColonnes) {
+                        if (pion.equals(plateau.getPlateau()[i - 1][j + 1]) &&
+                                pion.equals(plateau.getPlateau()[i - 2][j + 2]) &&
+                                pion.equals(plateau.getPlateau()[i - 3][j + 3])) {
+                            return true;
+                        }
                     }
                 }
-                if (i+4 <= plateau.getNbColonnes() && j - 3 >= 0){
-                    for (int k = 0; k < 4; k++){
-                        suite += plateau.getPlateau()[i+k][j-k];
-                    }
-                }
-                if (i-3 >= 0 && j + 4 <= plateau.getNbLignes()){
-                    for (int k = 0; k < 4; k++){
-                        suite += plateau.getPlateau()[i-k][j+k];
-                    }
-                }
-                if (i-3 >= 0 && j-3 >= 0){
-                    for (int k = 0; k < 4; k++){
-                        suite += plateau.getPlateau()[i-k][j-k];
-                    }
-                }
-                
             }
         }
+
         return false;
     }
+
 
     public boolean detecterVictoire(int colonne){
         return ckeckHorizontal() || checkVertical(colonne) || checkDiagonale();
