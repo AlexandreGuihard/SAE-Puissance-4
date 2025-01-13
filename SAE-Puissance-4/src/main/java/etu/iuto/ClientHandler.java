@@ -30,19 +30,32 @@ public class ClientHandler implements Runnable{
         read=reader.readLine();
         System.out.println(read);
 
-        if ("quit".equals(read)) {
+        switch(read)
+        {
+        case "quit":
             writer.println("quit");
-        }
+           break;
+   
+       case "liste gamme":
+           writer.println("voici la liste des joeur disponible");
+           break;
+   
+       case "partie":
+           writer.println("veux tu jouer avec ?");
+           break;
 
-        if ("ok".equals(read)) {
-            writer.println("whats up");
-            
-        }
-
-        if ("liste gamme".equals(read)) {
+        case "oui":
             writer.println("voici la liste des joeur disponible");
-            
+            break;
+
+        
+        
+       default:
+           System.out.println("non pris en charge");
+           break;
         }
+
+
         
     }
 

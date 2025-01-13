@@ -6,6 +6,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class ClientTcp implements Runnable {
 
@@ -13,6 +19,12 @@ public class ClientTcp implements Runnable {
     private String nomjeur;
     private Socket clientSocket;
     private boolean ecrit;
+
+    Lock lock = new ReentrantLock();
+    Condition condition1 = lock.newCondition();
+    Condition condition2 = lock.newCondition();
+    Condition condition3 = lock.newCondition();
+
 
     public ClientTcp(String ip,String nomjeur){
         this.ip = ip ;
@@ -26,8 +38,30 @@ public class ClientTcp implements Runnable {
         }
     }
 
+    public void bloquerComunnication(){
+      lock.lock();
+      try{
+        condition1.await();
+      }
+      catch(InterruptedException e ){
+        System.out.println("help");
+      }
+      finally{
+        lock.unlock();
+      }
+    }        
 
+    public void unlockCommunication(){
+        lock.lock(); 
+        condition1.signal();        
+        lock.unlock();
+    }  
 
+    public void libererTout(){
+        lock.lock(); 
+        condition1.signalAll();        
+        lock.unlock();
+    }  
 
     public String getIp() {
         return this.ip;
@@ -58,7 +92,7 @@ public class ClientTcp implements Runnable {
         // Interaction avec le client
 
         try{
-
+        
         BufferedReader reader = new BufferedReader( new InputStreamReader(this.getClientSocket().getInputStream()) );
         PrintWriter writer = new PrintWriter(this.getClientSocket().getOutputStream(),true);
         System.out.println("marche");
