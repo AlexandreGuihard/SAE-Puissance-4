@@ -89,25 +89,28 @@ public class Jeu {
     }
 
     /**
-     * @param colonne la colonne où le dernier pion a été posé
-     * @return true si il y a 4 pions de la même couleur consécutifs sur la même colonne sinon false
+     * @param colonne la colonne dans laquelle le dernier pion a été posé
+     * @return true s'il y a 4 pions de la même couleur consécutifs sur la même colonne sinon false
      */
     public boolean checkVertical(int colonne){
         String suitePion="";
         int suitePionsIdentiques=0;
         for(int j=0;j<plateau.getNbLignes();j++){
             String pion=plateau.getPlateau()[colonne][j];
-            if(!(pion.equals(" . ") && pion.equals(suitePion))){
-                suitePionsIdentiques++;
+            // Si la case est vide
+            if (pion.equals(" . ")){
+                // il ne peut pas y avoir de suite
+                return false;
             }
-            else if(suitePionsIdentiques==0 && (pion.equals(" . "))){
+            // Si c'est une autre couleur revenir à zero
+            else if (!(pion.equals(suitePion))){
                 suitePion=pion;
+                suitePionsIdentiques = 1;
+            // Sinon le pion est le même donc on incrémente la suite de pion identique
+            } else {
                 suitePionsIdentiques++;
             }
-            else{
-                suitePion="";
-                suitePionsIdentiques=0;
-            }
+            // Si on a une suite de 4 pions
             if(suitePionsIdentiques==4){
                 return true;
             }
