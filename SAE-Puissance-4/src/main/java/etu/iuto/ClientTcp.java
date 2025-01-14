@@ -18,50 +18,23 @@ public class ClientTcp implements Runnable {
     private String ip;
     private String nomjeur;
     private Socket clientSocket;
-    private boolean ecrit;
-
-    Lock lock = new ReentrantLock();
-    Condition condition1 = lock.newCondition();
-    Condition condition2 = lock.newCondition();
-    Condition condition3 = lock.newCondition();
+    private int port;
 
 
-    public ClientTcp(String ip,String nomjeur){
+
+    public ClientTcp(String ip,String nomjeur,int port){
         this.ip = ip ;
         this.nomjeur = nomjeur ;
-        this.ecrit = true;
+        this.port = port;
+
         try{
-        this.clientSocket = new Socket(this.ip,1111);
+        this.clientSocket = new Socket(this.ip,port);
         }
+
         catch(Exception e){
             System.err.println("[erreur]" + e);
         }
     }
-
-    public void bloquerComunnication(){
-      lock.lock();
-      try{
-        condition1.await();
-      }
-      catch(InterruptedException e ){
-        System.out.println("help");
-      }
-      finally{
-        lock.unlock();
-      }
-    }        
-
-    public void unlockCommunication(){
-        lock.lock(); 
-        condition1.signal();        
-        lock.unlock();
-    }  
-
-    public void libererTout(){
-        lock.lock(); 
-        condition1.signalAll();        
-        lock.unlock();
-    }  
 
     public String getIp() {
         return this.ip;
@@ -105,22 +78,21 @@ public class ClientTcp implements Runnable {
             read=reader.readLine();
             System.out.println(read);
 
-            if (read != "quit") {
-                this.ecrit = true;
+
 
                 
-                if ("name".equals(read)) {
-                    this.ecrit = false;
-                    writer.println(this.getNomjeur());
-                    writer.println(this.getIp());
-                }
-                if (this.ecrit) {
-                    String ecrit = myObj.nextLine();
-                    writer.println(ecrit);
-                }
+            if ("name".equals(read)) {
+                writer.println(this.getNomjeur());
+                writer.println(this.getIp());
+            }
+
+            
+            String ecrit = myObj.nextLine();
+            writer.println(ecrit);
+        
                 
             
-            }
+            
         }
         writer.println("quit");
 

@@ -11,10 +11,16 @@ import java.util.ArrayList;
 
 public class ClientHandler implements Runnable{
     private Socket clientSocket;
-    public ClientHandler(Socket clientSocket){
+    private ServeurTcp serveuractuel;
+
+    public ClientHandler(Socket clientSocket,ServeurTcp serveuractuel){
     // initialisation
     this.clientSocket = clientSocket;
+    this.serveuractuel =serveuractuel;
     }
+
+
+    
 
     public void run(){
     try{
@@ -35,6 +41,10 @@ public class ClientHandler implements Runnable{
         case "quit":
             writer.println("quit");
            break;
+
+        case "liste joueur":
+            writer.println(this.serveuractuel.afficherClient());
+            break;
    
        case "liste gamme":
            writer.println("voici la liste des joeur disponible");
@@ -48,11 +58,6 @@ public class ClientHandler implements Runnable{
             writer.println("voici la liste des joeur disponible");
             break;
 
-        
-        
-       default:
-           System.out.println("non pris en charge");
-           break;
         }
 
 

@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Executable{
     public static void main(String[] args) throws IOException{
         try{
-        ClientTcp client1 = new ClientTcp("localhost","jj");
+        ClientTcp client1 = new ClientTcp("localhost","jj",1111);
         
         Thread t = new Thread (client1) ;
         t.start();
