@@ -109,7 +109,7 @@ public class Jeu {
     public void finPartie(){}
 
     /**
-     * Vérifie si il y a une suite de 4 pions identique horizontalement
+     * Vérifie s'il y a une suite de 4 pions identique horizontalement
      * @return true si il y a 4 pions de la même couleur consécutifs sur la même ligne sinon false 
      */
     public boolean ckeckHorizontal(){
@@ -121,9 +121,9 @@ public class Jeu {
                 if(!(pion.equals(" . ")) && pion.equals(suitePion)){
                     suitePionsIdentiques++;
                 }
-                else if(suitePionsIdentiques==0 && (pion.equals(" . "))){
+                else if (!(pion.equals(suitePion))) {
                     suitePion=pion;
-                    suitePionsIdentiques++;
+                    suitePionsIdentiques = 1;
                 }
                 if(suitePionsIdentiques==4){
                     return true;
@@ -136,7 +136,7 @@ public class Jeu {
     }
 
     /**
-     * Vérifie si il y a une suite de 4 pions identique verticalement
+     * Vérifie s'il y a une suite de 4 pions identique verticalement
      * @param colonne la colonne dans laquelle le dernier pion a été posé
      * @return true s'il y a 4 pions de la même couleur consécutifs sur la même colonne sinon false
      */
