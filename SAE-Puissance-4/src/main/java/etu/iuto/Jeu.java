@@ -7,6 +7,7 @@ public class Jeu {
     private boolean gagne;
 
     /**
+     * Constructeur de la classe Jeu qui créer le plateau et l'initialise
      * @param joueurJ le joueur avec les pions jaunes
      * @param joueurR le joueur avec les pions rouges
      * Constructeur de la classe
@@ -39,9 +40,12 @@ public class Jeu {
         }
     }
 
+    /**
+     * Méthode pour lancer le jeu
+     */
     public void jouer(){
         int tour = 1;
-        int choix = 0;
+        int choix;
         affichePlateau();
         do {
             // Joueur J
@@ -74,6 +78,12 @@ public class Jeu {
         affichePlateau();
     }
 
+    /**
+     * Pose un pion sur le plateau
+     * @param colonne la colonne où poser le pion
+     * @param joueur le joueur qui pose le pion
+     * @return true si le pion à été posé sinon false
+     */
     public boolean poserPion(int colonne, Client joueur){
         String pion;
         if(joueur.equals(joueurR)){
@@ -85,9 +95,13 @@ public class Jeu {
         return plateau.ajouterPion(colonne, pion);
     }
 
+    /**
+     * Messages affichés en fin de partie
+     */
     public void finPartie(){}
 
     /**
+     * Vérifie si il y a une suite de 4 pions identique horizontalement
      * @return true si il y a 4 pions de la même couleur consécutifs sur la même ligne sinon false 
      */
     public boolean ckeckHorizontal(){
@@ -114,6 +128,7 @@ public class Jeu {
     }
 
     /**
+     * Vérifie si il y a une suite de 4 pions identique verticalement
      * @param colonne la colonne dans laquelle le dernier pion a été posé
      * @return true s'il y a 4 pions de la même couleur consécutifs sur la même colonne sinon false
      */
@@ -144,6 +159,7 @@ public class Jeu {
     }
 
     /**
+     * Vérifie si il y a une suite de 4 pions dans les diagnales bas droit et haut droit
      * @return true s'il y a 4 pions de la même couleur consécutifs sur une diagonale sinon false
      */
     public boolean checkDiagonale() {

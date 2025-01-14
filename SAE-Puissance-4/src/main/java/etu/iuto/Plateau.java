@@ -1,15 +1,12 @@
 package etu.iuto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Plateau {
     private final int NBCOLONNES=7;
     private final int NBLIGNES=6;
     private String[][] plateau;
 
     /**
-     * Constructeur de la classe
+     * Constructeur de la classe Plateau
      */
     public Plateau(){
         this.plateau=new String[NBLIGNES][NBCOLONNES];
@@ -33,11 +30,33 @@ public class Plateau {
         this.initPlateau();
     }
 
+
+    // Getters des attributs
     /**
-     * @param x le numéro de colonne
+     * Getter pour avoir le nombre de colonnes du plateau
+     * @return le nombre de colonnes du plateau
+     */
+    public int getNbColonnes(){
+        return NBCOLONNES;
+    }
+
+    /**
+     * Getter pour avoir le nombre de lignes du plateau
+     * @return le nombre de lignes du plateau
+     */
+    public int getNbLignes(){
+        return NBLIGNES;
+    }
+
+    public String[][] getPlateau(){
+        return plateau;
+    }
+
+    /**
+     * Place le pion dans la colonne choisi
+     * @param colonne la colonne où sera posé le pion
      * @param pion le caractère pour représenter le pion du joueur
      * @return true si le pion a été placé sinon false
-     * Place le pion dans la colonne x
      */
     public boolean ajouterPion(int colonne, String pion){
         int x=NBLIGNES-1;
@@ -48,37 +67,11 @@ public class Plateau {
             }
             --x;
         }
-//        for(int j=NBLIGNES-1;j<=0;--j){
-//            if(!plateau[j][colonne].equals(" . ")){
-//                plateau[j][colonne]=" "+pion+" ";
-//                return true;
-//            }
-//        }
         return false;
     }
 
     @Override
     public String toString(){
         return "Plateau Puissance 4: NbColonnes="+NBCOLONNES+", NbLignes="+NBLIGNES;
-    }
-
-    // Getters des attributs
-
-    /**
-     * @return le nombre de colonnes du plateau
-     */
-    public int getNbColonnes(){
-        return NBCOLONNES;
-    }
-
-    /**
-     * @return le nombre de lignes du plateau
-     */
-    public int getNbLignes(){
-        return NBLIGNES;
-    }
-
-    public String[][] getPlateau(){
-        return plateau;
     }
 }
