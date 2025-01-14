@@ -34,10 +34,24 @@ public class Client {
      * @return le choix de colonne du joueur
      */
     public int askColonne() {
+        boolean estCorrecte;
+        int choix = -1;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Choisissez une colonne : ");
+        do{
+            estCorrecte = true;
+            try {
+                choix = scanner.nextInt();
+            } catch (Exception e) {
+                estCorrecte = false;
+                System.out.println("Votre choix n'est pas un nombre valide (entre 0 et 6)");
+            }
+            if (choix < -1 || choix > 7) {
+                estCorrecte = false;
+                System.out.println("Votre choix n'est pas un nombre valide (entre 0 et 6)");
+            }
+        } while (!estCorrecte);
 
-        int choix = scanner.nextInt();
         System.out.println("Le joueur " + nom + " à choisi la colonne " + choix);
         return choix;
     }
