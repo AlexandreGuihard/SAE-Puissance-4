@@ -1,5 +1,4 @@
-package etu.iuto;
-
+package main.java.etu.iuto;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;

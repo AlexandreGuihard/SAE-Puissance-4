@@ -1,4 +1,4 @@
-package etu.iuto;
+package main.java.etu.iuto;
 
 import java.util.ArrayList;
 import java.util.List;

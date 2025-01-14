@@ -1,4 +1,4 @@
-package etu.iuto;
+package main.java.etu.iuto;
 
 import java.util.Scanner;
 
@@ -59,7 +59,7 @@ public class Client {
 
     @Override
     public String toString(){
-        return "Joueur " + this.nom + "\nScore: " + this.score + "\nNombre de parties jouées: " + this.nbPartiesJouees + "  Victoires: " + this.nbVictoires + "  Défaites: " + this.nbDefaites + "   Nuls: " + this.getPartiesNuls(); 
+        return "Joueur " + this.nom + "\nScore: " + this.score + "\nNombre de parties jouées: " + this.nbPartiesJouees + "  Victoires: " + this.nbVictoires + "  Défaites: " + this.nbDefaites + "   Nuls: " + this.getPartiesNuls();
     }
 
     // Getters et Setters
@@ -85,7 +85,7 @@ public class Client {
      * @return le nom du joueur
      */
     public String getNom() {
-        return this.nom; 
+        return this.nom;
     }
 
     /**
