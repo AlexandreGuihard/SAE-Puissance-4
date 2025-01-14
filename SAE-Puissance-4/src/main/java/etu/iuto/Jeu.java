@@ -1,5 +1,7 @@
 package etu.iuto;
 
+import java.util.Scanner;
+
 public class Jeu {
     private Plateau plateau;
     private Client joueurJ;
@@ -44,18 +46,24 @@ public class Jeu {
      * Méthode pour lancer le jeu
      */
     public void jouer(){
+        Scanner sc=new Scanner(System.in);
         int tour = 1;
         int choix;
+        System.out.println("------- [Tour n°" + tour + "] -------");
         affichePlateau();
         do {
             // Joueur J
             // Vérification si le joueur peut poser le pion et redemande si
             do {
                 // Ici demander le choix de l'utilisateur
-                choix = 0;
+                System.out.println("Au tour du Joueur J (X)");
+                choix = sc.nextInt();
             } while (!poserPion(choix, joueurJ));
+            System.out.println("------- [Tour n°" + tour + "] -------");
+            affichePlateau();
             // Si victoire du joueur J
             if (detecterVictoire(choix)) {
+                System.out.println("Le joueur J à gagner");
                 break;
             }
 
@@ -63,19 +71,19 @@ public class Jeu {
             // Vérification si le joueur peut poser le pion et redemande si
             do {
                 // Ici demander le choix de l'utilisateur
-                choix = 1;
+                System.out.println("Au tour du Joueur R (O)");
+                choix = sc.nextInt();
             } while (!poserPion(choix, joueurR));
+            System.out.println("------- [Tour n°" + tour + "] -------");
+            affichePlateau();
             // Si victoire du joueur R
             if (detecterVictoire(choix)) {
+                System.out.println("Le joueur R à gagner");
                 break;
             }
             // Affichage
-            System.out.println("------- [Tour n°" + tour + "] -------");
-            affichePlateau();
             tour++;
         } while (!gagne);
-        System.out.println("------- [Tour n°" + tour + "] -------");
-        affichePlateau();
     }
 
     /**
