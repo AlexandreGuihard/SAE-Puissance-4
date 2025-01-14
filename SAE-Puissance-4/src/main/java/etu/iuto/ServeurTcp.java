@@ -13,13 +13,10 @@ import java.util.ArrayList;
 public class ServeurTcp {
 
     private List<Thread> client;
-    
-    
     private ServerSocket serverSoket;
     
     
     public ServeurTcp(int port) {
-        
         try{
             this.serverSoket = new ServerSocket(port);
             System.out.println("serveur en attente");
@@ -32,10 +29,6 @@ public class ServeurTcp {
 
     public List<Thread> getClient() {
         return client;
-    }
-
-    public void setClient(List<Thread> client) {
-        this.client = client;
     }
     
     public ServerSocket getServerSoket() {
@@ -51,7 +44,15 @@ public class ServeurTcp {
         }
         else{
             for (Thread element :this.client){
-                lesclient += "["+element+","+ compteur++ +"]";
+
+                if (compteur == this.client.size() || this.client.size() == 1) {
+                    lesclient += "["+element+","+ compteur +"]";
+                }
+                else{
+                    lesclient += "["+element+","+ compteur +"],";
+                }
+                compteur++;
+                
             }
             return "la liste des client est "+ lesclient;
         }
@@ -71,7 +72,6 @@ public class ServeurTcp {
                 Socket clientSocket = serverSoket.accept();
                 System.out.println("connection etablie avec le client");
                 Thread t = new Thread(new ClientHandler(clientSocket,serveurTcp));
-                client.add(t);
                 t.start();
             
             }

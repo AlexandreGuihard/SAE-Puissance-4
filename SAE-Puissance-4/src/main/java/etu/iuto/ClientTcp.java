@@ -13,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class ClientTcp implements Runnable {
+public class ClientTcp {
 
     private String ip;
     private String nomjeur;
@@ -60,14 +60,20 @@ public class ClientTcp implements Runnable {
         this.clientSocket = clientSocket;
     }
 
-    @Override
-    public void run(){
+    public static void main(String[] args) {
+        
+    
         // Interaction avec le client
 
         try{
+        InetAddress adrLocale = InetAddress.getLocalHost();
+        String ip = adrLocale.getHostAddress();
         
-        BufferedReader reader = new BufferedReader( new InputStreamReader(this.getClientSocket().getInputStream()) );
-        PrintWriter writer = new PrintWriter(this.getClientSocket().getOutputStream(),true);
+
+        ClientTcp leclient = new ClientTcp(ip,"jj",1111);
+
+        BufferedReader reader = new BufferedReader( new InputStreamReader(leclient.getClientSocket().getInputStream()) );
+        PrintWriter writer = new PrintWriter(leclient.getClientSocket().getOutputStream(),true);
         System.out.println("marche");
 
         Scanner myObj = new Scanner(System.in);
@@ -82,8 +88,8 @@ public class ClientTcp implements Runnable {
 
                 
             if ("name".equals(read)) {
-                writer.println(this.getNomjeur());
-                writer.println(this.getIp());
+                writer.println(leclient.getNomjeur());
+                writer.println(leclient.getIp());
             }
 
             
@@ -98,7 +104,7 @@ public class ClientTcp implements Runnable {
 
         reader.close();  
         writer.close();
-        this.getClientSocket().close();
+        leclient.getClientSocket().close();
         
         }
 
@@ -107,5 +113,6 @@ public class ClientTcp implements Runnable {
         }
 
         }
+    }
 
-}
+
