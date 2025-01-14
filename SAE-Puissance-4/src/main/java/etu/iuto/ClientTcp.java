@@ -36,6 +36,7 @@ public class ClientTcp {
         }
     }
 
+
     public String getIp() {
         return this.ip;
     }
