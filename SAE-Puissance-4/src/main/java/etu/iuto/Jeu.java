@@ -1,7 +1,5 @@
 package main.java.etu.iuto;
 
-import java.util.Scanner;
-
 public class Jeu {
     private Plateau plateau;
     private Client joueurJ;
@@ -50,7 +48,6 @@ public class Jeu {
      * Méthode pour lancer le jeu
      */
     public void jouer(){
-        Scanner sc=new Scanner(System.in);
         int tour = 1;
         int choix;
         System.out.println("------- [Tour n°" + tour + "] -------");
@@ -60,14 +57,14 @@ public class Jeu {
             // Vérification si le joueur peut poser le pion et redemande si
             do {
                 // Ici demander le choix de l'utilisateur
-                System.out.println("Au tour du Joueur J (X)");
-                choix = sc.nextInt();
+                System.out.println("Au tour du Joueur " + joueurR.getNom() + " (O)");
+                choix = joueurJ.askColonne();
             } while (!poserPion(choix, joueurJ));
             System.out.println("------- [Tour n°" + tour + "] -------");
             affichePlateau();
             // Si victoire du joueur J
             if (detecterVictoire(choix)) {
-                System.out.println("Le joueur J a gagné");
+                System.out.println("Le joueur " + joueurR.getNom() + " a gagné");
                 break;
             }
 
@@ -75,15 +72,15 @@ public class Jeu {
             // Vérification si le joueur peut poser le pion et redemande si
             do {
                 // Ici demander le choix de l'utilisateur
-                System.out.println("Au tour du Joueur R (O)");
-                choix = sc.nextInt();
+                System.out.println("Au tour du Joueur " + joueurR.getNom() + " (O)");
+                choix = joueurR.askColonne();
             } while (!poserPion(choix, joueurR));
             tour++;
             System.out.println("------- [Tour n°" + tour + "] -------");
             affichePlateau();
             // Si victoire du joueur R
             if (detecterVictoire(choix)) {
-                System.out.println("Le joueur R a gagné");
+                System.out.println("Le joueur " + joueurR.getNom() + " a gagné");
                 break;
             }
         } while (!gagne);
