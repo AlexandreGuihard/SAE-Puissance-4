@@ -1,4 +1,4 @@
-package etu.iuto;
+package main.java.etu.iuto;
 
 public class Plateau {
     private final int NBCOLONNES=7;

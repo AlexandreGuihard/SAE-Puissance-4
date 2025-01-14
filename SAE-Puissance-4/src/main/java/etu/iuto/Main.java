@@ -1,4 +1,4 @@
-package etu.iuto;
+package main.java.etu.iuto;
 
 public class Main {
     public static void main(String[] args) {
