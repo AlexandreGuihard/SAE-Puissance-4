@@ -10,8 +10,8 @@ public class Client {
     private int nbDefaites;
 
     /**
-     * @param nom le nom du client
      * Constructeur de la classe
+     * @param nom le nom du client
      */
     public Client(String nom) {
         this.nom = nom;
@@ -22,8 +22,8 @@ public class Client {
     }
 
     /**
-     * @param joueur l'adversaire
      * Choisis l'adversaire parmi les joueurs en attente
+     * @param joueur l'adversaire
      */
     public void selectAdversaire(Client joueur) {
         // Permet de sélectionner un adversaire
@@ -50,8 +50,8 @@ public class Client {
     }
 
     /**
-     * @param joueur un joueur
      * Affiche l'historique des parties du joueur
+     * @param joueur un joueur
      */
     public static void historiqueParties(Client joueur) {
         // Affiche l'historique des parties du joueur
@@ -65,6 +65,7 @@ public class Client {
     // Getters et Setters
 
     /**
+     * Getter pour avoir le score du joueur
      * @return le score du joueur
      */
     public int getScore() {
@@ -72,14 +73,15 @@ public class Client {
     }
 
     /**
-     * @param score le nouveau score du joueur
      * Change le score du joueur
+     * @param score le nouveau score du joueur
      */
     public void setScore(int score) {
         this.score = score;
     }
 
     /**
+     * Getter pour avoir le nom du joueur
      * @return le nom du joueur
      */
     public String getNom() {
@@ -87,14 +89,15 @@ public class Client {
     }
 
     /**
-     * @param nom le nouveau nom du joueur
      * Change le nom du joueur
+     * @param nom le nouveau nom du joueur
      */
     public void setNom(String nom) {
         this.nom = nom;
     }
 
     /**
+     * Getter pour avoir le nombre de victoire du joueur
      * @return le nombre de victoires du joueur
      */
     public int getNbVictoires(){
@@ -102,14 +105,15 @@ public class Client {
     }
 
     /**
-     * @param nbVictoires le nouveau nombre de victoires du joueur
      * Change le nombre de victoires du joueur
+     * @param nbVictoires le nouveau nombre de victoires du joueur
      */
     public void setNbVictoires(int nbVictoires){
         this.nbVictoires=nbVictoires;
     }
 
     /**
+     * Getter pour avoir le nombre de parties jouées par le joueur
      * @return le nombre de parties jouées par le joueur
      */
     public int getNbPartiesJouees(){
@@ -118,14 +122,15 @@ public class Client {
 
 
     /**
-     * @param nbPartiesJouees le nouveau nombre de parties jouées
      * Change le nombre de parties jouées par le joueur
+     * @param nbPartiesJouees le nouveau nombre de parties jouées
      */
     public void setNbPartiesJouees(int nbPartiesJouees){
         this.nbPartiesJouees=nbPartiesJouees;
     }
 
     /**
+     * Getter pour avoir le nombre de défaites du joueur
      * @return le nombre de défaites du joueur
      */
     public int getNbDefaites(){
@@ -133,14 +138,15 @@ public class Client {
     }
 
     /**
-     * @param nbDefaites le nouveau nombre de défaites du joueur
      * Change le nombre de défaites du joueur
+     * @param nbDefaites le nouveau nombre de défaites du joueur
      */
     public void setNbDefaites(int nbDefaites){
         this.nbDefaites=nbDefaites;
     }
 
     /**
+     * Getter pour avoir le nombre de parties nul du joueur
      * @return les parties nuls du joueurs
      */
     public int getPartiesNuls(){
