@@ -40,6 +40,10 @@ public class Jeu {
             }
             System.out.println();
         }
+        for (int numcol = 0; numcol < lePlateau[0].length; numcol++){
+            System.out.print(" " + numcol + " ");
+        }
+        System.out.println();
     }
 
     /**
@@ -63,7 +67,7 @@ public class Jeu {
             affichePlateau();
             // Si victoire du joueur J
             if (detecterVictoire(choix)) {
-                System.out.println("Le joueur J à gagner");
+                System.out.println("Le joueur J a gagné");
                 break;
             }
 
@@ -74,15 +78,14 @@ public class Jeu {
                 System.out.println("Au tour du Joueur R (O)");
                 choix = sc.nextInt();
             } while (!poserPion(choix, joueurR));
+            tour++;
             System.out.println("------- [Tour n°" + tour + "] -------");
             affichePlateau();
             // Si victoire du joueur R
             if (detecterVictoire(choix)) {
-                System.out.println("Le joueur R à gagner");
+                System.out.println("Le joueur R a gagné");
                 break;
             }
-            // Affichage
-            tour++;
         } while (!gagne);
     }
 
