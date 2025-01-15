@@ -1,58 +1,57 @@
-package etu.iuto;
-
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
-public class ClientHandler implements Runnable{
+
+ public class ClientHandler implements Runnable {
     private Socket clientSocket;
-    private ServeurTcp serveuractuel;
     private BufferedReader reader;
     private PrintWriter writer;
+    private String nomDuJoueur;
+    private ServeurPuissance4 serveurPuissance4;
 
-    public ClientHandler(Socket clientSocket,ServeurTcp serveuractuel){
-        // initialisation
-        this.clientSocket = clientSocket;
-        this.serveuractuel =serveuractuel;
-        try{
-            this.reader = new BufferedReader( new InputStreamReader(this.clientSocket.getInputStream()) );
-            this.writer = new PrintWriter(this.clientSocket.getOutputStream(),true);
-        }
-        catch (Exception e){
+    public ClientHandler(Socket clientSocket,ServeurPuissance4 serveurPuissance4) {
+        try {
+            this.clientSocket = clientSocket;
+            this.reader = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
+            this.writer = new PrintWriter(this.clientSocket.getOutputStream(), true);
+            this.serveurPuissance4 = serveurPuissance4;
+            this.nomDuJoueur ="";
+        } 
+        catch (Exception e) {
             System.err.println("[erreur]" + e);
         }
-
     }
 
-    public boolean connect(BufferedReader reader,PrintWriter writer){
+    public boolean connect(String nomjoueur){
         writer.println("donnee votre nom");
         try {
-            String read = reader.readLine();
-            
-            if ( read.isEmpty()) {
-                writer.println("donnee votre nom");
+            if ( nomjoueur.isEmpty()) {
+                this.writer.println("donnee votre nom");
                 return false;
             }
 
-            if (read.length() < 3 || read.length() > 10 ) {
-                writer.println("la taille doit etre entre 3 et 10 caratere ");
+            if (nomjoueur.length() < 3 || nomjoueur.length() > 10 ) {
+                this.writer.println("ERR la taille doit etre entre 3 et 10 caratere ");
                 return false;
             }
             
-            if ( read.indexOf(" ") != -1) {
-                writer.println("il y a un espace present ");
+            if ( nomjoueur.indexOf(" ") != -1) {
+                this.writer.println("ERR il y a un espace present ");
                 return false;
             }
 
-            if
+            if ((this.serveurPuissance4.getPlayers().contains(nomjoueur))){
+                this.writer.println("ERR nom deja present ");
+                return false;
+            }
 
-
-            System.out.println(read);
+            this.writer.println("OK connection etablie ");
+            this.nomDuJoueur = nomjoueur;
+            System.out.println(this.nomDuJoueur);
+            
             return true;
 
         } 
@@ -63,78 +62,78 @@ public class ClientHandler implements Runnable{
     }
 
 
+    public void deconnection(){
 
-
-
-
-    public void envoyerPlatreauActuel(BufferedReader reader,PrintWriter writer){
-        writer.println("demande du nom");
-
-    }
-    
-
-    public void run(){
         try{
 
-        
-
-        
-        
-        while (!this.connect(reader, writer)) {
-            System.out.println("serveur en attente");
+            System.out.println("fin de communication avec le client");
+            writer.println("quit");
+            this.reader.close();  
+            this.writer.close();
+            this.clientSocket.close();
         }
 
-        this.serveuractuel.getClient().add(this.clientSocket);
-        
-        
-
-
-        while (!"quit".equals(read)) {
-
-            writer.println("que voulez vous faire ?");
-            read=reader.readLine();
-            System.out.println(read);
-
-            switch(read)
-            {
-            case "quit":
-                writer.println("quit");
-            break;
-
-            case "liste joueur":
-                writer.println(this.serveuractuel.afficherClient());
-                break;
+        catch (Exception e){
+            System.err.println("[erreur]" + e);
     
-        case "liste gamme":
-            writer.println("voici la liste des joeur disponible");
-            break;
-    
-        case "partie":
-            writer.println("veux tu jouer avec ?");
-            break;
+        }
+    }
 
-            case "oui":
-                writer.println("voici la liste des joeur disponible");
-                break;
+    @Override
+    public void run() {
+        try {
 
+            while (!this.connect(this.reader.readLine())) {
+                System.out.println("serveur en attente");
             }
 
+            Player player = new Player(this.nomDuJoueur);
 
-        
-    }
+            this.serveurPuissance4.getPlayers().put(this.nomDuJoueur, player);
+            this.serveurPuissance4.getJoueurDisponible().put(this.nomDuJoueur, player);
 
-    System.out.println("fin de communication avec");
-    writer.println("quit");
-    reader.close();  
-    writer.close();
-    clientSocket.close();
-    
-    }
+            this.writer.println("Bienvenue " + this.nomDuJoueur);
 
-    catch (Exception e){
-        System.err.println("[erreur]" + e);
+            /*partie de la gestion des commande taper */
+            String message;
+            while ((message = this.reader.readLine()) != null ) {
 
-    }
+                if (message.equalsIgnoreCase("LIST")) {
+                    this.writer.println("Joueurs connectés : " + this.serveurPuissance4.getPlayers().keySet());
+                }
 
+                else if (message.startsWith("ASK ")) {
+                    String[] parts = message.split(" ", 2);
+                    if (parts.length == 2) {
+
+                        player.setData(parts[1]);
+                        this.writer.println("Demande en cours");
+                    }
+                    else {
+                        this.writer.println("Commande incorrecte");
+                    }
+                }
+                
+                else if (message.equalsIgnoreCase("QUIT")) {
+                    this.serveurPuissance4.getPlayers().remove(this.nomDuJoueur, player);
+                    this.writer.println("Au revoir !");
+                    break;
+                }
+                
+                else {
+                    this.writer.println("Commande inconnue");
+                }
+            }
+        } 
+        catch (IOException e) {
+            System.err.println("Erreur avec le client : " + e.getMessage());
+        } 
+        finally {
+            try {
+                this.deconnection();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
