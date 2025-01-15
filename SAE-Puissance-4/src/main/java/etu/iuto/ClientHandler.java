@@ -1,5 +1,3 @@
-package etu.iuto;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,13 +21,16 @@ import java.net.Socket;
             this.nomDuJoueur ="";
         } 
         catch (Exception e) {
+            
             System.err.println("[erreur]" + e);
+            this.deconnection();
         }
     }
 
     public boolean connect(String nomjoueur){
-        writer.println("donnee votre nom");
+        
         try {
+
             if ( nomjoueur.isEmpty()) {
                 this.writer.println("donnee votre nom");
                 return false;
@@ -59,25 +60,30 @@ import java.net.Socket;
         } 
         catch (Exception e) {
             System.err.println("[erreur]" + e);
+            this.deconnection();
             return false;
         }
+
     }
 
 
     public void deconnection(){
 
         try{
-
-            System.out.println("fin de communication avec le client");
+            System.out.println("fin de communication avec le client " + this.clientSocket );
             writer.println("quit");
             this.reader.close();  
             this.writer.close();
             this.clientSocket.close();
+            if (this.serveurPuissance4.getPlayers().containsKey(this.nomDuJoueur)) {
+                this.serveurPuissance4.getPlayers().remove(this.nomDuJoueur);
+                this.serveurPuissance4.getJoueurDisponible().remove(this.nomDuJoueur);
+            }
         }
 
         catch (Exception e){
             System.err.println("[erreur]" + e);
-    
+            this.deconnection();
         }
     }
 
@@ -86,12 +92,12 @@ import java.net.Socket;
         try {
 
             while (!this.connect(this.reader.readLine())) {
-                System.out.println("serveur en attente");
+                System.out.println("serveur en attente du nom de " + this.clientSocket );
             }
 
             Player player = new Player(this.nomDuJoueur);
 
-            this.serveurPuissance4.getPlayers().put(this.nomDuJoueur, player);
+            
             this.serveurPuissance4.getJoueurDisponible().put(this.nomDuJoueur, player);
 
             this.writer.println("Bienvenue " + this.nomDuJoueur);
@@ -101,24 +107,42 @@ import java.net.Socket;
             while ((message = this.reader.readLine()) != null ) {
 
                 if (message.equalsIgnoreCase("LIST")) {
-                    this.writer.println("Joueurs connectés : " + this.serveurPuissance4.getPlayers().keySet());
+                    this.writer.println("Joueurs connectés : " + this.serveurPuissance4.getJoueurDisponible().keySet());
                 }
 
                 else if (message.startsWith("ASK ")) {
                     String[] parts = message.split(" ", 2);
                     if (parts.length == 2) {
+                        
+                        if(this.serveurPuissance4.getJoueurDisponible().containsKey(parts[1]) && !parts[1].equals(this.nomDuJoueur)){
+                            this.writer.println("Demande en cours");
+                            this.serveurPuissance4.getPlayers().put(this.nomDuJoueur, player);
+                        }
 
-                        player.setData(parts[1]);
-                        this.writer.println("Demande en cours");
+                        else if(parts[1].equals(this.nomDuJoueur)){
+                            this.writer.println("vous ne pouvez pas faire un partie contre vous meme pour le moment");
+                        }
+
+                        else if(this.serveurPuissance4.getPlayers().containsKey(parts[1])){
+                            this.writer.println("vous ne pouvez pas faire un partie ce joueur est deja en partie");
+                        }
+                        
+                        else if (!parts[1].equals(this.nomDuJoueur)){
+                            this.writer.println("le joueur que vous chercher n existe pas");
+                        }
+
+                        //player.setData(parts[1]);
+
                     }
                     else {
                         this.writer.println("Commande incorrecte");
                     }
                 }
                 
-                else if (message.equalsIgnoreCase("QUIT")) {
+                else if (message.equalsIgnoreCase("QUIT") || message.equalsIgnoreCase("EXIT")) {
                     this.serveurPuissance4.getPlayers().remove(this.nomDuJoueur, player);
                     this.writer.println("Au revoir !");
+                    this.deconnection();
                     break;
                 }
                 
@@ -126,14 +150,18 @@ import java.net.Socket;
                     this.writer.println("Commande inconnue");
                 }
             }
+            
+
         } 
         catch (IOException e) {
             System.err.println("Erreur avec le client : " + e.getMessage());
         } 
         finally {
+
             try {
                 this.deconnection();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }

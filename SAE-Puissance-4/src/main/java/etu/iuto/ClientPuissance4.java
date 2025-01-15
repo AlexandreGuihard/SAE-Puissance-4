@@ -1,9 +1,8 @@
-package etu.iuto;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+
 
 public class ClientPuissance4 extends Thread{
     private static final String SERVER_HOST = "localhost";
@@ -14,6 +13,9 @@ public class ClientPuissance4 extends Thread{
     private PrintWriter out;
     private BufferedReader consoleInput;
     private String serverResponse;
+    private Boolean enpartie;
+
+    private String playerName;
 
     public ClientPuissance4() {
         try {
@@ -22,29 +24,52 @@ public class ClientPuissance4 extends Thread{
             this.out = new PrintWriter(socket.getOutputStream(), true);
             this.consoleInput = new BufferedReader(new InputStreamReader(System.in));
             this.serverResponse ="";
+            this.playerName ="";
+            this.enpartie =false;
         } 
         catch (Exception e) {
             System.err.println("[erreur]" + e);
+            this.deconnection();
         }
+    }
+
+    public void deconnection(){
+        try{
+            System.out.println("fin de communication avec le serveur");
+            this.out.println("quit");
+            this.in.close();  
+            this.out.close();
+            this.socket.close();
+            System.exit(0);
+        }
+
+        catch (Exception e){
+            System.err.println("[erreur]" + e);
+            System.exit(1);
+
+        }
+
     }
 
     public boolean EntrezNom(){
         try{
-            String playerName = this.consoleInput.readLine();
+            String nomjoueur = this.consoleInput.readLine();
             this.out.println(playerName);
 
             // Vérifier la réponse du serveur
             this.serverResponse = in.readLine();
             if (this.serverResponse == null || this.serverResponse.startsWith("ERR ")){
-                
                 System.out.println("réessayer : " + this.serverResponse);
                 return false;
             }
+
+            this.playerName =nomjoueur;
             System.out.println(serverResponse);
             return true;
         }
         catch (Exception e) {
             System.err.println("Erreur client : " + e.getMessage());
+            this.deconnection();
             return false;
         }
     } 
@@ -52,9 +77,8 @@ public class ClientPuissance4 extends Thread{
     @Override
     public void run(){
         try{
-            System.out.print("Entrez votre nom : ");
             while (!this.EntrezNom()) {
-                System.out.print("Entrez votre nom : ");
+                
             }
 
             /* bloucle interaction */
@@ -67,7 +91,8 @@ public class ClientPuissance4 extends Thread{
                 this.out.println(userInput);
 
                 //quitter le serveur
-                if ("EXIT".equalsIgnoreCase(userInput)) {
+                if ("EXIT".equalsIgnoreCase(userInput) || "QUIT".equalsIgnoreCase(userInput) ) {
+                    this.deconnection();
                     System.out.println("Déconnexion...");
                     break;
                 }
@@ -82,6 +107,7 @@ public class ClientPuissance4 extends Thread{
         }
         catch (Exception e) {
             System.err.println("Erreur client : " + e.getMessage());
+            this.deconnection();
         }
     }
 
@@ -93,6 +119,7 @@ public class ClientPuissance4 extends Thread{
         }
         catch (Exception e) {
             System.err.println("Erreur client : " + e.getMessage());
+            
         }
     }
 }
