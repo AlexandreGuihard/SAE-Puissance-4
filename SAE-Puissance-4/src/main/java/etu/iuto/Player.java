@@ -1,3 +1,5 @@
+package etu.iuto;
+
 public class Player {
     private String name;
     private String data;

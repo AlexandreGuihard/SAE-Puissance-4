@@ -1,3 +1,5 @@
+package etu.iuto;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -43,7 +45,7 @@ import java.net.Socket;
                 return false;
             }
 
-            if ((this.serveurPuissance4.getPlayers().contains(nomjoueur))){
+            if ((this.serveurPuissance4.getPlayers().containsKey(nomjoueur))){
                 this.writer.println("ERR nom deja present ");
                 return false;
             }
