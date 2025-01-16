@@ -10,8 +10,8 @@ import java.util.*;
 public class ServeurPuissance4 {
     private static final int PORT = 1111;
     
-    private  Map<String, Player> players = Collections.synchronizedMap(new HashMap<>());
-    private  Map<String, Player> joueurDisponible = Collections.synchronizedMap(new HashMap<>());
+    private  Map<String, Client> players = Collections.synchronizedMap(new HashMap<>());
+    private  Map<String, Client> joueurDisponible = Collections.synchronizedMap(new HashMap<>());
 
     private  Map<String, ClientJoue> partieEncours = Collections.synchronizedMap(new HashMap<>());
     private List<String> listinterdite;
@@ -31,11 +31,11 @@ public class ServeurPuissance4 {
     public List<String> getListinterdite(){
         return this.listinterdite;
     }
-    public Map<String, Player> getPlayers() {
+    public Map<String, Client> getPlayers() {
         return this.players;
     }
 
-    public Map<String, Player> getJoueurDisponible() {
+    public Map<String, Client> getJoueurDisponible() {
         return this.joueurDisponible;
     }
 
@@ -55,18 +55,18 @@ public class ServeurPuissance4 {
         }
     }
 
-    public void partie(Player player1,Player player2){
+    public void partie(Client player1, Client player2){
 
-        PrintWriter writer2 = player2.getWriterDuJoueur();
-        BufferedReader reader2 = player2.getReaderDuJoueur();
-        PrintWriter writer1 = player1.getWriterDuJoueur();
-        BufferedReader reader1 = player1.getReaderDuJoueur();
+        PrintWriter writer2 = player2.getWriter();
+        BufferedReader reader2 = player2.getReader();
+        PrintWriter writer1 = player1.getWriter();
+        BufferedReader reader1 = player1.getReader();
 
-        writer2.println("Si voulez vous faire une parti avec "+ player1.getName() + " écrivez : 'ok'. sinon nimporte quoi d'autre");
+        writer2.println("Si voulez vous faire une parti avec "+ player1.getNom() + " écrivez : 'ok'. sinon nimporte quoi d'autre");
 
         try{
             if ("ok".equals(reader1.readLine())) {
-                ClientJoue partyjouer = new ClientJoue(player1,player2);
+                ClientJoue partyjouer = new ClientJoue(player1, player2);
                 new Thread(partyjouer).start();
                 String nomParty = "partie " + (partieEncours.size()+1) ;
                 partieEncours.put(nomParty, partyjouer);
@@ -74,7 +74,7 @@ public class ServeurPuissance4 {
                 return;
             }
             else{
-                writer2.println("connection refuser avec "+ player1.getName());
+                writer2.println("connection refuser avec "+ player1.getNom());
                 writer1.println("by");
                 return;
             }

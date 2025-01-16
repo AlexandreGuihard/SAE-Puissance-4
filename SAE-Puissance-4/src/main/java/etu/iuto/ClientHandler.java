@@ -97,7 +97,7 @@ import java.net.Socket;
             while (!this.connect(this.reader.readLine())) {
                 System.out.println("Serveur en attente du nom de " + this.clientSocket );
             }
-            Player player = new Player(this.nomDuJoueur,this.reader,this.writer);
+            Client player = new Client(this.nomDuJoueur,this.reader,this.writer);
             
             this.serveurPuissance4.getJoueurDisponible().put(this.nomDuJoueur, player);
             this.writer.println("OK connection etablie Bienvenue " + this.nomDuJoueur + " Que voulez vous faire");

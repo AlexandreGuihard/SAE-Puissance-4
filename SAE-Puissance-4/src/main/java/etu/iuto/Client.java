@@ -1,5 +1,7 @@
 package main.java.etu.iuto;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Client {
@@ -9,8 +11,12 @@ public class Client {
     private int nbPartiesJouees;
     private int nbDefaites;
 
+    private String data;
+    private BufferedReader reader;
+    private PrintWriter writer;
+
     /**
-     * Constructeur de la classe
+     * Constructeur de la classe sans BufferedReader et PrintWriter
      * @param nom le nom du client
      */
     public Client(String nom) {
@@ -19,6 +25,28 @@ public class Client {
         this.nbVictoires = 0;
         this.nbPartiesJouees = 0;
         this.nbDefaites = 0;
+        this.data = "";
+
+        this.reader = null;
+        this.writer = null;
+    }
+
+    /**
+     * Constructeur de la classe
+     * @param nom le nom du client*
+     * @param reader le reader du client
+     * @param writer le writer du client
+     */
+    public Client(String nom, BufferedReader reader, PrintWriter writer) {
+        this.nom = nom;
+        this.score = 0;
+        this.nbVictoires = 0;
+        this.nbPartiesJouees = 0;
+        this.nbDefaites = 0;
+        this.data = "";
+
+        this.reader = reader;
+        this.writer = writer;
     }
 
     /**
@@ -151,5 +179,37 @@ public class Client {
      */
     public int getPartiesNuls(){
         return nbPartiesJouees -(nbDefaites + nbVictoires);
+    }
+
+    /**
+     * Getter pour le reader du client
+     * @return le reader du client
+     */
+    public BufferedReader getReader() {
+        return reader;
+    }
+
+    /**
+     * Getter pour le writter du client
+     * @return le writter du client
+     */
+    public PrintWriter getWriter() {
+        return writer;
+    }
+
+    /**
+     * Change les données du client
+     * @param data les nouvelles données du client
+     */
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    /**
+     * Getter pour les données du client
+     * @return les données du client
+     */
+    public String getData() {
+        return data;
     }
 }
