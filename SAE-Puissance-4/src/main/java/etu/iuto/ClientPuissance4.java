@@ -1,4 +1,4 @@
-package etu.iuto;
+package main.java.etu.iuto;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
