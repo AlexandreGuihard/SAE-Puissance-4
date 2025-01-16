@@ -44,7 +44,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.4.0</version>
                 <configuration>
-                    <mainClass>etu.iuto.Main</mainClass>
+                    <mainClass>main.java.etu.iuto.${EXECUTABLE}</mainClass>
                 </configuration>
             </plugin>
         </plugins>
