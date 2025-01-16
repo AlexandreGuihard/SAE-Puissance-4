@@ -30,14 +30,16 @@ public class Jeu {
     /**
      * Affiche le plateau après que chaque pion soit posé
      */
-    public void affichePlateau(){
+    public void affichePlateau(int tour){
         String[][] lePlateau=plateau.getPlateau();
+        System.out.println("------- [Tour n°" + tour + "] -------");
         for(int i=0;i<plateau.getNbLignes();i++){
             for (int j=0;j<plateau.getNbColonnes();j++){
                 System.out.print(lePlateau[i][j]);
             }
             System.out.println();
         }
+        System.out.println("---------------------");
         for (int numcol = 0; numcol < lePlateau[0].length; numcol++){
             System.out.print(" " + numcol + " ");
         }
@@ -50,21 +52,19 @@ public class Jeu {
     public void jouer(){
         int tour = 1;
         int choix;
-        System.out.println("------- [Tour n°" + tour + "] -------");
-        affichePlateau();
+        affichePlateau(tour);
         do {
             // Joueur J
             // Vérification si le joueur peut poser le pion et redemande si
             do {
                 // Ici demander le choix de l'utilisateur
-                System.out.println("Au tour du Joueur " + joueurR.getNom() + " (O)");
+                System.out.println("Au tour du Joueur " + joueurJ.getNom() + " (O)");
                 choix = joueurJ.askColonne();
             } while (!poserPion(choix, joueurJ));
-            System.out.println("------- [Tour n°" + tour + "] -------");
-            affichePlateau();
+            affichePlateau(tour);
             // Si victoire du joueur J
             if (detecterVictoire(choix)) {
-                System.out.println("Le joueur " + joueurR.getNom() + " a gagné");
+                System.out.println("Le joueur " + joueurJ.getNom() + " a gagné");
                 break;
             }
 
@@ -76,8 +76,7 @@ public class Jeu {
                 choix = joueurR.askColonne();
             } while (!poserPion(choix, joueurR));
             tour++;
-            System.out.println("------- [Tour n°" + tour + "] -------");
-            affichePlateau();
+            affichePlateau(tour);
             // Si victoire du joueur R
             if (detecterVictoire(choix)) {
                 System.out.println("Le joueur " + joueurR.getNom() + " a gagné");
