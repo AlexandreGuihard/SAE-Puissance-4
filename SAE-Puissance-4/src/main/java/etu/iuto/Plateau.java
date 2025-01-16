@@ -61,11 +61,16 @@ public class Plateau {
     public boolean ajouterPion(int colonne, String pion){
         int x=NBLIGNES-1;
         while (x>=0) {
-            if (plateau[x][colonne].equals(" . ")) {
-                plateau[x][colonne]=" " + pion + " ";
-                return true;
+            if (colonne >= 0 && colonne < NBCOLONNES-1) {
+                if (plateau[x][colonne].equals(" . ")) {
+                    plateau[x][colonne]=" " + pion + " ";
+                    return true;
+                }
+                --x;
+            } else {
+                System.out.println("Colonne invalide. Colonnes disponible [0 - " + (NBCOLONNES-1) + "]");
+                x = -1;
             }
-            --x;
         }
         return false;
     }

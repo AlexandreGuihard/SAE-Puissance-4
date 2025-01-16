@@ -60,6 +60,7 @@ public class Jeu {
                 // Ici demander le choix de l'utilisateur
                 System.out.println("Au tour du Joueur " + joueurJ.getNom() + " (O)");
                 choix = joueurJ.askColonne();
+                affichePlateau(tour);
             } while (!poserPion(choix, joueurJ));
             affichePlateau(tour);
             // Si victoire du joueur J
@@ -74,9 +75,10 @@ public class Jeu {
                 // Ici demander le choix de l'utilisateur
                 System.out.println("Au tour du Joueur " + joueurR.getNom() + " (O)");
                 choix = joueurR.askColonne();
+                affichePlateau(tour);
             } while (!poserPion(choix, joueurR));
-            tour++;
             affichePlateau(tour);
+            tour++;
             // Si victoire du joueur R
             if (detecterVictoire(choix)) {
                 System.out.println("Le joueur " + joueurR.getNom() + " a gagné");
