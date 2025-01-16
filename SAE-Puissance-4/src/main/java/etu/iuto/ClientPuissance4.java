@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -33,6 +34,14 @@ public class ClientPuissance4 extends Thread{
         }
     }
 
+    public BufferedReader getReader(){
+        return this.in;
+    }
+
+    public PrintWriter getWriter(){
+        return this.out;
+    }
+
     public void deconnection(){
         try{
             System.out.println("fin de communication avec le serveur");
@@ -53,6 +62,7 @@ public class ClientPuissance4 extends Thread{
 
     public boolean EntrezNom(){
         try{
+
             String nomjoueur = this.consoleInput.readLine();
             this.out.println(playerName);
 
@@ -66,6 +76,7 @@ public class ClientPuissance4 extends Thread{
             this.playerName =nomjoueur;
             System.out.println(serverResponse);
             return true;
+
         }
         catch (Exception e) {
             System.err.println("Erreur client : " + e.getMessage());
@@ -86,7 +97,6 @@ public class ClientPuissance4 extends Thread{
             while (true) {
                 System.out.print("> "); // Prompt
                 userInput = this.consoleInput.readLine();
-
                 // Envoi de la commande au serveur
                 this.out.println(userInput);
 
@@ -99,7 +109,7 @@ public class ClientPuissance4 extends Thread{
 
                 /*lecture serveur */
                 String response;
-                while ((response = this.in.readLine()) != null) {
+                while ((response = this.in.readLine()) != null || (response = this.in.readLine()) != "") {
                     System.out.println(response);
                     if (!this.in.ready()) break;
                 }
@@ -114,8 +124,8 @@ public class ClientPuissance4 extends Thread{
     public static void main(String[] args) {
         try {
             ClientPuissance4 clientPuissance4 = new ClientPuissance4();
-            System.out.println("Connecté au serveur !");
             clientPuissance4.start();
+            System.out.println("Connecté au serveur !");
         }
         catch (Exception e) {
             System.err.println("Erreur client : " + e.getMessage());
