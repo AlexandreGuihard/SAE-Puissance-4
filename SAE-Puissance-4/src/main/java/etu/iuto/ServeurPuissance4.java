@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ServeurPuissance4 {
     private static final int PORT = 1111;
@@ -16,19 +14,23 @@ public class ServeurPuissance4 {
     private  Map<String, Player> joueurDisponible = Collections.synchronizedMap(new HashMap<>());
 
     private  Map<String, ClientJoue> partieEncours = Collections.synchronizedMap(new HashMap<>());
-
+    private List<String> listinterdite;
 
     private ServerSocket serverSocket;
     
     public ServeurPuissance4(){
         try {
             this.serverSocket = new ServerSocket(PORT);
+            this.listinterdite = new ArrayList<>();
         }
         catch (IOException e) {
             System.err.println("Erreur serveur : " + e.getMessage());
         }
     }
 
+    public List<String> getListinterdite(){
+        return this.listinterdite;
+    }
     public Map<String, Player> getPlayers() {
         return this.players;
     }
@@ -58,11 +60,12 @@ public class ServeurPuissance4 {
         PrintWriter writer2 = player2.getWriterDuJoueur();
         BufferedReader reader2 = player2.getReaderDuJoueur();
         PrintWriter writer1 = player1.getWriterDuJoueur();
+        BufferedReader reader1 = player1.getReaderDuJoueur();
 
-        writer2.println("voulez vous faire une parti avec "+ player1.getName() + " ok ? sinon nimporte quoi d'autre");
+        writer2.println("Si voulez vous faire une parti avec "+ player1.getName() + " écrivez : 'ok'. sinon nimporte quoi d'autre");
 
         try{
-            if ("ok".equals(reader2.readLine())) {
+            if ("ok".equals(reader1.readLine())) {
                 ClientJoue partyjouer = new ClientJoue(player1,player2);
                 new Thread(partyjouer).start();
                 String nomParty = "partie " + (partieEncours.size()+1) ;
@@ -71,8 +74,8 @@ public class ServeurPuissance4 {
                 return;
             }
             else{
-                writer1.println("connection refuser avec "+ player1.getName());
-                writer2.println("by");
+                writer2.println("connection refuser avec "+ player1.getName());
+                writer1.println("by");
                 return;
             }
         }

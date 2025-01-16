@@ -37,6 +37,11 @@ import java.net.Socket;
                 this.writer.println("donnee votre nom");
                 return false;
             }
+            if ( this.serveurPuissance4.getListinterdite().contains(nomjoueur)) {
+                this.writer.println("commande interdite");
+                return false;
+            }
+
             if (nomjoueur.length() < 3 || nomjoueur.length() > 10 ) {
                 this.writer.println("ERR la taille doit etre entre 3 et 10 caratere ");
                 return false;
@@ -112,7 +117,7 @@ import java.net.Socket;
                         }
                             //this.serveurPuissance4.getPlayers().put(this.nomDuJoueur, player);
                         else if(parts[1].equals(this.nomDuJoueur)){
-                            this.writer.println("vous ne pouvez pas faire un partie contre vous meme pour le moment");
+                            this.writer.println("vous ne pouvez pas faire un partie contre vous meme");
                         }
 
                         else if(this.serveurPuissance4.getPlayers().containsKey(parts[1])){

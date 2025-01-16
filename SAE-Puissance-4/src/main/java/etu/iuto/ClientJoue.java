@@ -36,7 +36,7 @@ public class ClientJoue implements Runnable{
 
     public void run(){
         this.WriterDuJoueur1.println("votre party avec "+ this.joueur2.getName() + " vas commencer !");
-        this.WriterDuJoueur2.println("votre vous faire une parti avec "+ this.joueur1.getName() + " vas commencer !");
+        this.WriterDuJoueur2.println("votre parti avec "+ this.joueur1.getName() + " vas commencer !");
 
     }
 
