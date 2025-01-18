@@ -55,36 +55,35 @@ public class ServeurPuissance4 {
         }
     }
 
-    public void partie(Client player1, Client player2){
+    public boolean partie(Client player1, Client player2){
 
         PrintWriter writer2 = player2.getWriter();
         BufferedReader reader2 = player2.getReader();
         PrintWriter writer1 = player1.getWriter();
         BufferedReader reader1 = player1.getReader();
-
-        writer2.println("Si voulez vous faire une parti avec "+ player1.getNom() + " écrivez : 'ok'. sinon nimporte quoi d'autre");
-
+        writer2.println("Si voulez vous faire une parti avec "+ player1.getNom() + " écrivez : 'ok'. sinon non");
         try{
-            if ("ok".equals(reader1.readLine())) {
+            while (!"ok".equals(reader2.readLine())|| !"non".equals(reader2.readLine())) {
+                writer2.println("ces oui ou non !");
+            }
+
+            if ("ok".equals(reader2.readLine())) {
                 ClientJoue partyjouer = new ClientJoue(player1, player2);
                 new Thread(partyjouer).start();
                 String nomParty = "partie " + (partieEncours.size()+1) ;
                 partieEncours.put(nomParty, partyjouer);
-                writer1.println("la partie vas commencer");
-                return;
+                return true;
             }
             else{
-                writer2.println("connection refuser avec "+ player1.getNom());
-                writer1.println("by");
-                return;
+                writer2.println("by");
+                return false;
             }
+            
         }
         catch(Exception e){
             System.out.println(e);
-        }
-
-        
-        
+            return false;
+        }    
     }
 
     public static void main(String[] args) {

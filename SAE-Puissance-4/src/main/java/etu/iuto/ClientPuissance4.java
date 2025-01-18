@@ -71,6 +71,7 @@ public class ClientPuissance4 extends Thread{
             this.serverResponse = in.readLine();
             if (this.serverResponse == null || this.serverResponse.startsWith("ERR ")){
                 System.out.println("réessayer : " + this.serverResponse);
+                this.deconnection();
                 return false;
             }
 
@@ -93,18 +94,18 @@ public class ClientPuissance4 extends Thread{
                 
             }
 
+
             /* bloucle interaction */
             String userInput;
-            while (true) {
+            while ((userInput = this.consoleInput.readLine()) != null ) {
                 System.out.print("> "); // Prompt
-                userInput = this.consoleInput.readLine();
                 // Envoi de la commande au serveur
                 this.out.println(userInput);
 
                 //quitter le serveur
                 if ("EXIT".equalsIgnoreCase(userInput) || "QUIT".equalsIgnoreCase(userInput) ) {
-                    this.deconnection();
                     System.out.println("Déconnexion...");
+                    this.deconnection();
                     break;
                 }
 
@@ -114,6 +115,9 @@ public class ClientPuissance4 extends Thread{
                     System.out.println(response);
                     if (!this.in.ready()) break;
                 }
+            }
+            if (userInput == null) {
+                this.deconnection();
             }
         }
         catch (Exception e) {
