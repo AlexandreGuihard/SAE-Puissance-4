@@ -15,6 +15,7 @@ public class ServeurPuissance4 {
 
     private  Map<String, ClientJoue> partieEncours = Collections.synchronizedMap(new HashMap<>());
     private List<String> listinterdite;
+    private  String symbols ;
 
     private ServerSocket serverSocket;
     
@@ -22,6 +23,7 @@ public class ServeurPuissance4 {
         try {
             this.serverSocket = new ServerSocket(PORT);
             this.listinterdite = new ArrayList<>(List.of("LIST", "ASK", "EXIT","QUIT","PLAY"));
+            this.symbols = "[!@#$%^&*()\\-_=+\\[\\]{}\\\\|;:'\",<.>/?~`§°€£¥¤©®™¶µ•¿¡÷×±∞Ωπ√≠≈≤≥←→↑↓↔↕∂∑∏∫∴∵∧∨∩∪⊂⊃⊆⊇⊕⊗⊥∅∆∇⋅∝∈∉∋∌∠∀∃∴⟨⟩«»¢‰…†‡¤÷×ØøÅåÆæßƒ]";
         }
         catch (IOException e) {
             System.err.println("Erreur serveur : " + e.getMessage());
@@ -31,6 +33,12 @@ public class ServeurPuissance4 {
     public List<String> getListinterdite(){
         return this.listinterdite;
     }
+
+    public String getListCaractereInterdie(){
+        return this.symbols;
+    }
+
+
     public Map<String, Client> getPlayers() {
         return this.players;
     }
@@ -61,14 +69,16 @@ public class ServeurPuissance4 {
         BufferedReader reader2 = player2.getReader();
         PrintWriter writer1 = player1.getWriter();
         BufferedReader reader1 = player1.getReader();
+        
         writer2.println("Si voulez vous faire une parti avec "+ player1.getNom() + " écrivez : 'ok'. sinon non");
         try{
-            while (!"ok".equals(reader2.readLine())|| !"non".equals(reader2.readLine())) {
+            while (!"ok".equals(reader2.readLine()) && !"non".equals(reader2.readLine())) {
                 writer2.println("ces oui ou non !");
             }
 
             if ("ok".equals(reader2.readLine())) {
                 ClientJoue partyjouer = new ClientJoue(player1, player2);
+                new Thread(partyjouer).start();
                 String nomParty = "partie " + (partieEncours.size()+1) ;
                 partieEncours.put(nomParty, partyjouer);
                 return true;

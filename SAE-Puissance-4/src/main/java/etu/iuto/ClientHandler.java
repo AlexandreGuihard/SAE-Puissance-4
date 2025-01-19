@@ -6,13 +6,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-
  public class ClientHandler implements Runnable {
     private Socket clientSocket;
     private BufferedReader reader;
     private PrintWriter writer;
     private String nomDuJoueur;
     private ServeurPuissance4 serveurPuissance4;
+    private Boolean enpartie;
 
     public ClientHandler(Socket clientSocket,ServeurPuissance4 serveurPuissance4) {
         try {
@@ -21,6 +21,7 @@ import java.net.Socket;
             this.writer = new PrintWriter(this.clientSocket.getOutputStream(), true);
             this.serveurPuissance4 = serveurPuissance4;
             this.nomDuJoueur ="";
+            this.enpartie = false;
         } 
         catch (Exception e) {
             
@@ -31,16 +32,18 @@ import java.net.Socket;
 
     public boolean connect(String nomjoueur){
         try {
-
             if ( nomjoueur.isEmpty()) {
                 this.writer.println("donnee votre nom");
                 return false;
             }
             if ( this.serveurPuissance4.getListinterdite().contains(nomjoueur)) {
-                this.writer.println("commande interdite");
+                this.writer.println("nom de commande ne peut pas etre un nom");
                 return false;
             }
-
+            if (nomjoueur.matches(".*" + this.serveurPuissance4.getListCaractereInterdie() + ".*")) {
+                this.writer.println("nom avec caractere interdite");
+                return false;
+            }
             if (nomjoueur.length() < 3 || nomjoueur.length() > 10 ) {
                 this.writer.println("ERR la taille doit etre entre 3 et 10 caratere ");
                 return false;
@@ -49,6 +52,7 @@ import java.net.Socket;
                 this.writer.println("ERR il y a un espace present ");
                 return false;
             }
+
             if ((this.serveurPuissance4.getJoueurDisponible().containsKey(nomjoueur)||this.serveurPuissance4.getPlayers().containsKey(nomjoueur))){
                 this.writer.println("ERR nom deja present ");
                 return false;
@@ -56,17 +60,13 @@ import java.net.Socket;
             this.nomDuJoueur = nomjoueur;
             System.out.println(this.nomDuJoueur);
             return true;
-
         } 
         catch (Exception e) {
             System.err.println("[erreur]" + e);
             this.deconnection();
             return false;
         }
-
     }
-
-    
 
     
 
@@ -89,34 +89,36 @@ import java.net.Socket;
         }
     }
 
+
+
     public void Listfonction(){
         this.writer.println("Joueurs connectés : " + this.serveurPuissance4.getJoueurDisponible().keySet());
     }
 
+
+
     public void AskFonction(String[] parts){
         if (parts.length == 2) {
             if(this.serveurPuissance4.getJoueurDisponible().containsKey(parts[1]) && !parts[1].equals(this.nomDuJoueur)){
+
                 this.writer.println("Demande en cours");
                 if (this.serveurPuissance4.partie(this.serveurPuissance4.getJoueurDisponible().get(this.nomDuJoueur), this.serveurPuissance4.getJoueurDisponible().get(parts[1]))){
                     this.writer.println("partie accepter");
+                    this.enpartie =true;
                 }
                 else{
                     this.writer.println("partie non accepter");
                 }
             }
-            
             else if(parts[1].equals(this.nomDuJoueur)){
                 this.writer.println("vous ne pouvez pas faire un partie contre vous meme");
             }
-
             else if(this.serveurPuissance4.getPlayers().containsKey(parts[1])){
                 this.writer.println("vous ne pouvez pas faire un partie ce joueur est deja en partie");
             }
-            
             else if (!parts[1].equals(this.nomDuJoueur)){
                 this.writer.println("le joueur que vous chercher n existe pas");
             }
-
         }
     }
 
@@ -141,21 +143,32 @@ import java.net.Socket;
                 if (message.equalsIgnoreCase("LIST")) {
                     this.Listfonction();
                 }
-                else if (message.startsWith("ASK ")) {
+                else if (message.startsWith("ASK ") && !this.enpartie) {
                     String[] parts = message.split(" ", 2);
                     this.AskFonction(parts);
                 }
+                else if (message.startsWith("ASK ") && this.enpartie) {
+                    this.writer.println("quitter cette partie pour demander une autre partie");
+                }
+
                 else if (message.equalsIgnoreCase("ASK")) {
                     this.writer.println("il faut rajouter un espace et le joueur");
                 }
-                else if (message.equalsIgnoreCase("QUIT") || message.equalsIgnoreCase("EXIT")) {
+                else if (message.equalsIgnoreCase("QUIT") && !this.enpartie || message.equalsIgnoreCase("EXIT") && !this.enpartie)  {
                     this.serveurPuissance4.getPlayers().remove(this.nomDuJoueur, player);
                     this.writer.println("Au revoir !");
                     break;
                 }
+
+                else if (message.equalsIgnoreCase("QUIT") && this.enpartie || message.equalsIgnoreCase("EXIT") && this.enpartie){
+
+                }
+
+
                 else if (message.startsWith("> null")) {
                     this.deconnection();
                 }
+
                 else {
                     this.writer.println("Commande incorrecte vous pouvez faire: LIST,ASK [joueur],EXIT");
                 }

@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 
-public class ClientJoue{
+public class ClientJoue implements Runnable{
     private Client joueur1;
     private Client joueur2;
 
@@ -16,7 +16,7 @@ public class ClientJoue{
     private BufferedReader readerDuJoueur2;
     private PrintWriter WriterDuJoueur2;
 
-    //private Jeu jeu;
+    private Jeu jeu;
 
 
     public ClientJoue(Client joueur1 ,Client joueur2 ){
@@ -29,7 +29,7 @@ public class ClientJoue{
         this.readerDuJoueur2 = this.joueur2.getReader();
         this.WriterDuJoueur2 = this.joueur2.getWriter();
 
-        //this.jeu = new Jeu();
+        this.jeu = new Jeu(joueur1,joueur2);
 
 
     }
@@ -37,6 +37,8 @@ public class ClientJoue{
     public void run(){
         this.WriterDuJoueur1.println("votre party avec "+ this.joueur2.getNom() + " vas commencer !");
         this.WriterDuJoueur2.println("votre parti avec "+ this.joueur1.getNom() + " vas commencer !");
+        this.jeu.jouer();
+
 
     }
 
