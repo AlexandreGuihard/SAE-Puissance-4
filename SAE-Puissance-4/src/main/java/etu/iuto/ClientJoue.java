@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 
-public class ClientJoue implements Runnable{
+public class ClientJoue{
     private Client joueur1;
     private Client joueur2;
 

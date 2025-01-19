@@ -69,7 +69,6 @@ public class ServeurPuissance4 {
 
             if ("ok".equals(reader2.readLine())) {
                 ClientJoue partyjouer = new ClientJoue(player1, player2);
-                new Thread(partyjouer).start();
                 String nomParty = "partie " + (partieEncours.size()+1) ;
                 partieEncours.put(nomParty, partyjouer);
                 return true;

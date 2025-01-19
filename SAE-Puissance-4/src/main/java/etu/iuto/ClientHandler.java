@@ -30,7 +30,6 @@ import java.net.Socket;
     }
 
     public boolean connect(String nomjoueur){
-        
         try {
 
             if ( nomjoueur.isEmpty()) {
@@ -124,7 +123,7 @@ import java.net.Socket;
     public Client creationJoueur(){
         Client player = new Client(this.nomDuJoueur,this.reader,this.writer);
         this.serveurPuissance4.getJoueurDisponible().put(this.nomDuJoueur, player);
-        this.writer.println("OK connection etablie Bienvenue " + this.nomDuJoueur + " Que voulez vous faire");
+        this.writer.println("OK connection etablie Bienvenue " + this.nomDuJoueur + " Que voulez vous faire vous pouvez faire: LIST,ASK [joueur],EXIT");
         return player;
     }
 
@@ -138,7 +137,7 @@ import java.net.Socket;
             Client player =this.creationJoueur();
             /*partie de la gestion des commande taper */
             String message;
-            while ((message = this.reader.readLine()) != null ) {
+            while ((message = this.reader.readLine()) != null) {
                 if (message.equalsIgnoreCase("LIST")) {
                     this.Listfonction();
                 }

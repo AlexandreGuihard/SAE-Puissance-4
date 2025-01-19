@@ -64,14 +64,14 @@ public class ClientPuissance4 extends Thread{
     public boolean EntrezNom(){
         try{
 
+
             String nomjoueur = this.consoleInput.readLine();
-            this.out.println(playerName);
+            this.out.println(nomjoueur);
 
             // Vérifier la réponse du serveur
             this.serverResponse = in.readLine();
             if (this.serverResponse == null || this.serverResponse.startsWith("ERR ")){
                 System.out.println("réessayer : " + this.serverResponse);
-                this.deconnection();
                 return false;
             }
 
@@ -90,8 +90,9 @@ public class ClientPuissance4 extends Thread{
     @Override
     public void run(){
         try{
+            System.out.println("entrez votre prenom");
             while (!this.EntrezNom()) {
-                
+                System.out.println("faux");
             }
 
 
