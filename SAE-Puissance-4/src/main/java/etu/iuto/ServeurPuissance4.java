@@ -21,7 +21,7 @@ public class ServeurPuissance4 {
     public ServeurPuissance4(){
         try {
             this.serverSocket = new ServerSocket(PORT);
-            this.listinterdite = new ArrayList<>();
+            this.listinterdite = new ArrayList<>(List.of("LIST", "ASK", "EXIT","QUIT","PLAY"));
         }
         catch (IOException e) {
             System.err.println("Erreur serveur : " + e.getMessage());

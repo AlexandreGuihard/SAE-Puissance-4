@@ -92,7 +92,6 @@ public class ClientPuissance4 extends Thread{
         try{
             System.out.println("entrez votre prenom");
             while (!this.EntrezNom()) {
-                System.out.println("faux");
             }
 
 

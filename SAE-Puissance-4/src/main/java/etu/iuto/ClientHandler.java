@@ -145,13 +145,15 @@ import java.net.Socket;
                     String[] parts = message.split(" ", 2);
                     this.AskFonction(parts);
                 }
+                else if (message.equalsIgnoreCase("ASK")) {
+                    this.writer.println("il faut rajouter un espace et le joueur");
+                }
                 else if (message.equalsIgnoreCase("QUIT") || message.equalsIgnoreCase("EXIT")) {
                     this.serveurPuissance4.getPlayers().remove(this.nomDuJoueur, player);
                     this.writer.println("Au revoir !");
-                    this.deconnection();
                     break;
                 }
-                if (message.startsWith("> null")) {
+                else if (message.startsWith("> null")) {
                     this.deconnection();
                 }
                 else {
@@ -163,7 +165,9 @@ import java.net.Socket;
         }
         finally {
             try {
-                this.deconnection();
+                if (this.clientSocket.isConnected() || !this.clientSocket.isClosed()) {
+                    this.deconnection();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
