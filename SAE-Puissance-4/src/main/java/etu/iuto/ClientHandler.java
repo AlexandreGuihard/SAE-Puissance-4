@@ -104,7 +104,6 @@ import java.net.Socket;
                 this.writer.println("Demande en cours");
                 if (this.serveurPuissance4.partie(this.serveurPuissance4.getJoueurDisponible().get(this.nomDuJoueur), this.serveurPuissance4.getJoueurDisponible().get(parts[1]))){
                     this.writer.println("partie accepter");
-                    this.enpartie =true;
                 }
                 else{
                     this.writer.println("partie non accepter");
@@ -164,12 +163,11 @@ import java.net.Socket;
 
                 }
 
-
                 else if (message.startsWith("> null")) {
                     this.deconnection();
                 }
 
-                else {
+                else if(!this.serveurPuissance4.getPlayers().containsKey(this.nomDuJoueur)){
                     this.writer.println("Commande incorrecte vous pouvez faire: LIST,ASK [joueur],EXIT");
                 }
             }

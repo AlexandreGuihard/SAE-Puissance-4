@@ -69,14 +69,24 @@ public class ServeurPuissance4 {
         BufferedReader reader2 = player2.getReader();
         PrintWriter writer1 = player1.getWriter();
         BufferedReader reader1 = player1.getReader();
-        
+
         writer2.println("Si voulez vous faire une parti avec "+ player1.getNom() + " écrivez : 'ok'. sinon non");
         try{
-            while (!"ok".equals(reader2.readLine()) && !"non".equals(reader2.readLine())) {
+            String response = reader2.readLine();
+            while (!"ok".equals(response) && !"non".equals(response)) {
                 writer2.println("ces oui ou non !");
+                response = reader2.readLine();
             }
 
-            if ("ok".equals(reader2.readLine())) {
+            if ("ok".equals(response)) {
+
+
+                this.getPlayers().put(player1.getNom(), player1);
+                this.getPlayers().put(player2.getNom(), player2);
+
+                this.getJoueurDisponible().remove(player2.getNom());
+                this.getJoueurDisponible().remove(player1.getNom());
+
                 ClientJoue partyjouer = new ClientJoue(player1, player2);
                 new Thread(partyjouer).start();
                 String nomParty = "partie " + (partieEncours.size()+1) ;

@@ -11,10 +11,12 @@ public class Client {
     private int nbPartiesJouees;
     private int nbDefaites;
 
+
+    
     private String data;
     private BufferedReader reader;
     private PrintWriter writer;
-
+    
     /**
      * Constructeur de la classe sans BufferedReader et PrintWriter
      * @param nom le nom du client
@@ -26,11 +28,14 @@ public class Client {
         this.nbPartiesJouees = 0;
         this.nbDefaites = 0;
         this.data = "";
-
+        
         this.reader = null;
         this.writer = null;
+        
     }
+    
 
+    
     /**
      * Constructeur de la classe
      * @param nom le nom du client*
