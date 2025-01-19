@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
- public class ClientHandler implements Runnable {
+public class ClientHandler implements Runnable {
     private Socket clientSocket;
     private BufferedReader reader;
     private PrintWriter writer;
@@ -100,23 +100,19 @@ import java.net.Socket;
     public void AskFonction(String[] parts){
         if (parts.length == 2) {
             if(this.serveurPuissance4.getJoueurDisponible().containsKey(parts[1]) && !parts[1].equals(this.nomDuJoueur)){
-
-                this.writer.println("Demande en cours");
-                if (this.serveurPuissance4.partie(this.serveurPuissance4.getJoueurDisponible().get(this.nomDuJoueur), this.serveurPuissance4.getJoueurDisponible().get(parts[1]))){
-                    this.writer.println("partie accepter");
-                }
-                else{
-                    this.writer.println("partie non accepter");
-                }
+                this.writer.println("Demande en cours...");
+                Client clientCible = this.serveurPuissance4.getJoueurDisponible().get(parts[1]);
+                clientCible.getWriter().println("Le joueur " + this.nomDuJoueur + " veut jouer avec vous.");
+                clientCible.getWriter().flush();
             }
             else if(parts[1].equals(this.nomDuJoueur)){
-                this.writer.println("vous ne pouvez pas faire un partie contre vous meme");
+                this.writer.println("Vous ne pouvez pas faire une partie contre vous-même.");
             }
             else if(this.serveurPuissance4.getPlayers().containsKey(parts[1])){
-                this.writer.println("vous ne pouvez pas faire un partie ce joueur est deja en partie");
+                this.writer.println("Ce joueur est déjà en partie.");
             }
-            else if (!parts[1].equals(this.nomDuJoueur)){
-                this.writer.println("le joueur que vous chercher n existe pas");
+            else {
+                this.writer.println("Le joueur que vous cherchez n'existe pas.");
             }
         }
     }

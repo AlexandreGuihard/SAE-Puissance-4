@@ -1,5 +1,8 @@
 package main.java.etu.iuto;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class Jeu {
     private Plateau plateau;
     private Client joueurJ;
@@ -31,19 +34,39 @@ public class Jeu {
      * Affiche le plateau après que chaque pion soit posé
      */
     public void affichePlateau(int tour){
+        PrintWriter writerJoueurJ = this.joueurJ.getWriter();
+        PrintWriter writerJoueurR = this.joueurR.getWriter();
         String[][] lePlateau=plateau.getPlateau();
-        System.out.println("------- [Tour n°" + tour + "] -------");
+        writerJoueurJ.println("------- [Tour n°" + tour + "] -------");
+        writerJoueurJ.flush();
+        writerJoueurR.println("------- [Tour n°" + tour + "] -------");
+        writerJoueurR.flush();
         for(int i=0;i<plateau.getNbLignes();i++){
             for (int j=0;j<plateau.getNbColonnes();j++){
-                System.out.print(lePlateau[i][j]);
+                writerJoueurJ.print(lePlateau[i][j]);
+                writerJoueurJ.flush();
+                writerJoueurR.print(lePlateau[i][j]);
+                writerJoueurR.flush();
             }
-            System.out.println();
+            writerJoueurJ.println();
+            writerJoueurJ.flush();
+            writerJoueurR.println();
+            writerJoueurR.flush();
         }
-        System.out.println("---------------------");
+        writerJoueurJ.println("---------------------");
+        writerJoueurJ.flush();
+        writerJoueurR.println("---------------------");
+        writerJoueurR.flush();
         for (int numcol = 0; numcol < lePlateau[0].length; numcol++){
-            System.out.print(" " + numcol + " ");
+            writerJoueurJ.print(" " + numcol + " ");
+            writerJoueurJ.flush();
+            writerJoueurR.print(" " + numcol + " ");
+            writerJoueurR.flush();
         }
-        System.out.println();
+        writerJoueurJ.println();
+        writerJoueurJ.flush();
+        writerJoueurR.println();
+        writerJoueurR.flush();
     }
 
     /**
@@ -52,20 +75,38 @@ public class Jeu {
     public void jouer(){
         int tour = 1;
         int choix;
+        PrintWriter writerJoueurJ = this.joueurJ.getWriter();
+        PrintWriter writerJoueurR = this.joueurR.getWriter();
         affichePlateau(tour);
         do {
             // Joueur J
             // Vérification si le joueur peut poser le pion et redemande si
             do {
                 // Ici demander le choix de l'utilisateur
-                System.out.println("Au tour du Joueur " + joueurJ.getNom() + " (O)");
-                choix = joueurJ.askColonne();
+                writerJoueurJ.println("Au tour du Joueur " + joueurJ.getNom() + " (O)");
+                writerJoueurJ.flush();
+                writerJoueurR.println("Au tour du Joueur " + joueurJ.getNom() + " (O)");
+                writerJoueurR.flush();
+                try {
+                    choix = joueurJ.askColonne();
+                    writerJoueurJ.println("Le joueur " + this.joueurJ.getNom() + " à choisi la colonne " + choix);
+                    writerJoueurJ.flush();
+                    writerJoueurR.println("Le joueur " + this.joueurJ.getNom() + " à choisi la colonne " + choix);
+                    writerJoueurR.flush();
+                } catch (IOException e) {
+                    writerJoueurR.println("Problème de connexion avec le joueur " + joueurJ.getNom());
+                    writerJoueurR.flush();
+                    return;
+                }
                 affichePlateau(tour);
             } while (!poserPion(choix, joueurJ));
             affichePlateau(tour);
             // Si victoire du joueur J
             if (detecterVictoire(choix)) {
-                System.out.println("Le joueur " + joueurJ.getNom() + " a gagné");
+                writerJoueurJ.println("Le joueur " + joueurJ.getNom() + " a gagné");
+                writerJoueurJ.flush();
+                writerJoueurR.println("Le joueur " + joueurJ.getNom() + " a gagné");
+                writerJoueurR.flush();
                 break;
             }
 
@@ -73,15 +114,31 @@ public class Jeu {
             // Vérification si le joueur peut poser le pion et redemande si
             do {
                 // Ici demander le choix de l'utilisateur
-                System.out.println("Au tour du Joueur " + joueurR.getNom() + " (O)");
-                choix = joueurR.askColonne();
+                writerJoueurJ.println("Au tour du Joueur " + joueurR.getNom() + " (O)");
+                writerJoueurJ.flush();
+                writerJoueurR.println("Au tour du Joueur " + joueurR.getNom() + " (O)");
+                writerJoueurR.flush();
+                try {
+                    choix = joueurR.askColonne();
+                    writerJoueurJ.println("Le joueur " + this.joueurR.getNom() + " à choisi la colonne " + choix);
+                    writerJoueurJ.flush();
+                    writerJoueurR.println("Le joueur " + this.joueurR.getNom() + " à choisi la colonne " + choix);
+                    writerJoueurR.flush();
+                } catch (IOException e) {
+                    writerJoueurJ.println("Problème de connexion avec le joueur " + joueurR.getNom());
+                    writerJoueurJ.flush();
+                    return;
+                }
                 affichePlateau(tour);
             } while (!poserPion(choix, joueurR));
             affichePlateau(tour);
             tour++;
             // Si victoire du joueur R
             if (detecterVictoire(choix)) {
-                System.out.println("Le joueur " + joueurR.getNom() + " a gagné");
+                writerJoueurJ.println("Le joueur " + joueurR.getNom() + " a gagné");
+                writerJoueurJ.flush();
+                writerJoueurR.println("Le joueur " + joueurR.getNom() + " a gagné");
+                writerJoueurR.flush();
                 break;
             }
         } while (!gagne);

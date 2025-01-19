@@ -70,16 +70,17 @@ public class ServeurPuissance4 {
         PrintWriter writer1 = player1.getWriter();
         BufferedReader reader1 = player1.getReader();
 
-        writer2.println("Si voulez vous faire une parti avec "+ player1.getNom() + " écrivez : 'ok'. sinon non");
+        writer2.println("Si voulez vous faire une parti avec "+ player1.getNom() + " écrivez : 'ok'. sinon 'non'");
+        writer2.flush();
         try{
             String response = reader2.readLine();
             while (!"ok".equals(response) && !"non".equals(response)) {
-                writer2.println("ces oui ou non !");
+                writer2.println("c'est oui ou non !");
+                writer2.flush();
                 response = reader2.readLine();
             }
 
             if ("ok".equals(response)) {
-
 
                 this.getPlayers().put(player1.getNom(), player1);
                 this.getPlayers().put(player2.getNom(), player2);
@@ -95,9 +96,9 @@ public class ServeurPuissance4 {
             }
             else{
                 writer2.println("by");
+                writer2.flush();
                 return false;
             }
-            
         }
         catch(Exception e){
             System.out.println(e);
@@ -112,9 +113,5 @@ public class ServeurPuissance4 {
         while (true) {
             serveurPuissance4.connection();
         }
-       
     }
-
-   
-
 }

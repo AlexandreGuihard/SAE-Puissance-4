@@ -1,6 +1,7 @@
 package main.java.etu.iuto;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -66,12 +67,18 @@ public class Client {
      * Demande au joueur de placer son pion dans une colonne
      * @return le choix de colonne du joueur
      */
-    public int askColonne() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Choisissez une colonne : ");
-
-        int choix = scanner.nextInt();
-        System.out.println("Le joueur " + nom + " à choisi la colonne " + choix);
+    public int askColonne() throws IOException {
+        this.writer.println("Choisissez une colonne : ");
+        this.writer.flush();
+        String reponse = this.reader.readLine();
+        int choix;
+        try {
+            choix = Integer.parseInt(reponse);
+        } catch (NumberFormatException e) {
+            this.writer.println("Votre choix doit être un nombre.");
+            this.writer.flush();
+            choix = this.askColonne();
+        }
         return choix;
     }
 
