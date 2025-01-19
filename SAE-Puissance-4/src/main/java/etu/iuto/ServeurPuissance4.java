@@ -74,12 +74,11 @@ public class ServeurPuissance4 {
         try{
             String response = reader2.readLine();
             while (!"ok".equals(response) && !"non".equals(response)) {
-                writer2.println("ces oui ou non !");
+                writer2.println("ces ok ou non !");
                 response = reader2.readLine();
             }
 
             if ("ok".equals(response)) {
-
 
                 this.getPlayers().put(player1.getNom(), player1);
                 this.getPlayers().put(player2.getNom(), player2);
