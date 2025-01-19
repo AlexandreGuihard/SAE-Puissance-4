@@ -21,7 +21,7 @@ import java.net.Socket;
             this.writer = new PrintWriter(this.clientSocket.getOutputStream(), true);
             this.serveurPuissance4 = serveurPuissance4;
             this.nomDuJoueur ="";
-            this.enpartie = false;
+            
         } 
         catch (Exception e) {
             
@@ -142,24 +142,24 @@ import java.net.Socket;
                 if (message.equalsIgnoreCase("LIST")) {
                     this.Listfonction();
                 }
-                else if (message.startsWith("ASK ") && !this.enpartie) {
+                else if (message.startsWith("ASK ") && !this.serveurPuissance4.getPlayers().containsKey(this.nomDuJoueur)) {
                     String[] parts = message.split(" ", 2);
                     this.AskFonction(parts);
                 }
-                else if (message.startsWith("ASK ") && this.enpartie) {
+                else if (message.startsWith("ASK ") && this.serveurPuissance4.getPlayers().containsKey(this.nomDuJoueur)) {
                     this.writer.println("quitter cette partie pour demander une autre partie");
                 }
 
                 else if (message.equalsIgnoreCase("ASK")) {
                     this.writer.println("il faut rajouter un espace et le joueur");
                 }
-                else if (message.equalsIgnoreCase("QUIT") && !this.enpartie || message.equalsIgnoreCase("EXIT") && !this.enpartie)  {
+                else if (message.equalsIgnoreCase("QUIT") && !this.serveurPuissance4.getPlayers().containsKey(this.nomDuJoueur) || message.equalsIgnoreCase("EXIT") && !this.serveurPuissance4.getPlayers().containsKey(this.nomDuJoueur))  {
                     this.serveurPuissance4.getPlayers().remove(this.nomDuJoueur, player);
                     this.writer.println("Au revoir !");
                     break;
                 }
 
-                else if (message.equalsIgnoreCase("QUIT") && this.enpartie || message.equalsIgnoreCase("EXIT") && this.enpartie){
+                else if (message.equalsIgnoreCase("QUIT") && this.serveurPuissance4.getPlayers().containsKey(this.nomDuJoueur) || message.equalsIgnoreCase("EXIT") && this.serveurPuissance4.getPlayers().containsKey(this.nomDuJoueur)){
 
                 }
 
@@ -170,6 +170,12 @@ import java.net.Socket;
                 else if(!this.serveurPuissance4.getPlayers().containsKey(this.nomDuJoueur)){
                     this.writer.println("Commande incorrecte vous pouvez faire: LIST,ASK [joueur],EXIT");
                 }
+
+                else if(this.serveurPuissance4.getPlayers().containsKey(this.nomDuJoueur)){
+                    this.writer.println("help");
+                }
+
+
             }
         } catch (IOException e) {
             System.err.println("Erreur avec le client : " + e.getMessage());
