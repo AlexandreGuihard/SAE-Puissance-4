@@ -1,5 +1,8 @@
 package main.java.etu.iuto;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Client {
@@ -9,8 +12,14 @@ public class Client {
     private int nbPartiesJouees;
     private int nbDefaites;
 
+
+    
+    private String data;
+    private BufferedReader reader;
+    private PrintWriter writer;
+    
     /**
-     * Constructeur de la classe
+     * Constructeur de la classe sans BufferedReader et PrintWriter
      * @param nom le nom du client
      */
     public Client(String nom) {
@@ -19,6 +28,31 @@ public class Client {
         this.nbVictoires = 0;
         this.nbPartiesJouees = 0;
         this.nbDefaites = 0;
+        this.data = "";
+        
+        this.reader = null;
+        this.writer = null;
+        
+    }
+    
+
+    
+    /**
+     * Constructeur de la classe
+     * @param nom le nom du client*
+     * @param reader le reader du client
+     * @param writer le writer du client
+     */
+    public Client(String nom, BufferedReader reader, PrintWriter writer) {
+        this.nom = nom;
+        this.score = 0;
+        this.nbVictoires = 0;
+        this.nbPartiesJouees = 0;
+        this.nbDefaites = 0;
+        this.data = "";
+
+        this.reader = reader;
+        this.writer = writer;
     }
 
     /**
@@ -33,12 +67,18 @@ public class Client {
      * Demande au joueur de placer son pion dans une colonne
      * @return le choix de colonne du joueur
      */
-    public int askColonne() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Choisissez une colonne : ");
-
-        int choix = scanner.nextInt();
-        System.out.println("Le joueur " + nom + " à choisi la colonne " + choix);
+    public int askColonne() throws IOException {
+        this.writer.println("Choisissez une colonne : ");
+        this.writer.flush();
+        String reponse = this.reader.readLine();
+        int choix;
+        try {
+            choix = Integer.parseInt(reponse);
+        } catch (NumberFormatException e) {
+            this.writer.println("Votre choix doit être un nombre.");
+            this.writer.flush();
+            choix = this.askColonne();
+        }
         return choix;
     }
 
@@ -151,5 +191,37 @@ public class Client {
      */
     public int getPartiesNuls(){
         return nbPartiesJouees -(nbDefaites + nbVictoires);
+    }
+
+    /**
+     * Getter pour le reader du client
+     * @return le reader du client
+     */
+    public BufferedReader getReader() {
+        return reader;
+    }
+
+    /**
+     * Getter pour le writter du client
+     * @return le writter du client
+     */
+    public PrintWriter getWriter() {
+        return writer;
+    }
+
+    /**
+     * Change les données du client
+     * @param data les nouvelles données du client
+     */
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    /**
+     * Getter pour les données du client
+     * @return les données du client
+     */
+    public String getData() {
+        return data;
     }
 }
